@@ -56,6 +56,9 @@ class Commands():
         self.user = user
         self.human_user = user.split('!', 1)[0]
 
+        if self.human_user in self.ignored_users:
+            return False
+
         talking_to_me = msg.startswith(self.client.nickname + ":") \
             or msg.startswith(self.client.nickname + ",") \
             or msg.startswith(self.client.nickname + " ")
@@ -67,11 +70,7 @@ class Commands():
                     no_interaction = True
 
             if not no_interaction:
-                return False
-
-        if self.human_user in self.ignored_users:
-            return True
-
+                return True
         done = False
         output = None
 
@@ -83,8 +82,9 @@ class Commands():
 
         if output is not None:
             self.client.msg(channel, output)
+            return False
 
-        return not done
+        return True
 
     def ping(self):
         return "%s, pong" % self.human_user
