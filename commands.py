@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-# GCI bot.
-# Parse tasks data and show info about them
+# GCI bot. Commands module
+#
 # Copyright (C) Ignacio Rodríguez <ignacio@sugarlabs.org>
 
 # This program is free software: you can redistribute it and/or modify
@@ -22,7 +22,7 @@ import time
 
 commands = ["commands", "ping", "about", "rules", "guide", "faq",
             "timeline", "leave this channel", "join",
-            "no longer ignore", "ignore", "!licensing"]
+            "no longer ignore", "ignore", "!licensing", "ignoring"]
 
 no_interaction_required = ["!licensing"]
 
@@ -39,6 +39,7 @@ admins = ["@unaffiliated/ignacio"]
 
 licensing_info = "Attribution and Licensing\nPlease read: http://people.sugarlabs.org/ignacio/about_licensing.txt"
 
+
 class Commands():
 
     def __init__(self, client):
@@ -47,7 +48,7 @@ class Commands():
         self.channel = None
         self.user = None
         self.human_user = None
-        self.ignored_users = []
+        self.ignored_users = ["meeting"]
 
     def process_msg(self, msg, channel, user):
         self.msg = msg
@@ -76,7 +77,13 @@ class Commands():
 
         for command in commands:
             if command in msg.lower() and not done:
-                output = eval("self.%s()" % command.replace(" ", "_").replace("!", ""))
+                output = eval(
+                    "self.%s()" %
+                    command.replace(
+                        " ",
+                        "_").replace(
+                        "!",
+                        ""))
                 done = True
 
         if output is not None:
@@ -155,14 +162,31 @@ class Commands():
                 continue
 
             self.ignored_users.remove(user)
-            self.client.describe(self.channel, "is no longer ignoring %s" % user)
+            self.client.describe(
+                self.channel,
+                "is no longer ignoring %s" %
+                user)
 
     def licensing(self):
         finder = re.compile(ur'!licensing ([\S*]+)')
         users = finder.findall(self.msg)
         for user in users:
             self.client.msg(user, licensing_info)
-            self.client.msg(self.channel, "%s, please check your private messages." % user)
-        
+            self.client.msg(
+                self.channel,
+                "%s, please check your private messages." %
+                user)
+
     def commands(self):
-        self.client.msg(self.channel, "%s, %s" % (self.human_user, ", ".join(commands)))
+        self.client.msg(
+            self.channel, "%s, %s" %
+            (self.human_user, ", ".join(commands)))
+
+    def ignoring(self):
+        if not self.is_admin():
+            return
+
+        self.client.describe(
+            self.channel,
+            "is ignoring %s" % str(
+                self.ignored_users))
