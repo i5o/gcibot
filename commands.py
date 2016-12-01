@@ -75,15 +75,10 @@ class Commands():
         done = False
         output = None
 
-        for command in commands:
-            if command in msg.lower() and not done:
-                output = eval(
-                    "self.%s()" %
-                    command.replace(
-                        " ",
-                        "_").replace(
-                        "!",
-                        ""))
+        for c in commands:
+            if c in msg.lower() and not done:
+                command.replace(" ", "_").replace("!", "")
+                output = eval("self.%s()" % command)
                 done = True
 
         if output is not None:
@@ -162,20 +157,16 @@ class Commands():
                 continue
 
             self.ignored_users.remove(user)
-            self.client.describe(
-                self.channel,
-                "is no longer ignoring %s" %
-                user)
+            self.client.describe(self.channel, "is no longer ignoring %s" %
+                                 user)
 
     def licensing(self):
         finder = re.compile(ur'!licensing ([\S*]+)')
         users = finder.findall(self.msg)
         for user in users:
             self.client.msg(user, licensing_info)
-            self.client.msg(
-                self.channel,
-                "%s, please check your private messages." %
-                user)
+            self.client.msg(self.channel,
+                            "%s, please check your private messages." % user)
 
     def commands(self):
         self.client.msg(
@@ -186,7 +177,5 @@ class Commands():
         if not self.is_admin():
             return
 
-        self.client.describe(
-            self.channel,
-            "is ignoring %s" % str(
-                self.ignored_users))
+        str_ignored = str(self.ignored_users)
+        self.client.describe(self.channel, "is ignoring %s" % str_ignored)
