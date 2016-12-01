@@ -76,7 +76,7 @@ class Commands():
 
         for c in commands:
             if c in msg.lower() and not done:
-                command.replace(" ", "_").replace("!", "")
+                command = c.replace(" ", "_").replace("!", "")
                 output = eval("self.%s()" % command)
                 done = True
 
