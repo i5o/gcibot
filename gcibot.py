@@ -67,7 +67,7 @@ class GCIBot(irc.IRCClient):
         self.check_memo(user, channel)
 
     def userJoined(self, user, channel):
-        self.check_memo()
+        self.check_memo(user, channel)
 
     def check_memo(self, user, channel):
         human_user = user.split('!', 1)[0].lower()
