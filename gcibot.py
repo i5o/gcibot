@@ -65,9 +65,11 @@ class GCIBot(irc.IRCClient):
                 self.msg(channel, task)
 
     def userJoined(self, user, channel):
-        #for msg in self.pending_msgs:
-        #    if msg[1] = 
+        # for msg in self.pending_msgs:
+        #    if msg[1] =
         pass
+
+
 class BotFactory(protocol.ClientFactory):
 
     def __init__(self, channels):
