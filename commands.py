@@ -279,6 +279,4 @@ class Commands():
         message = " ".join(users[3:len(users)])
 
         self.pending_msgs.append([self.channel, to, self.human_user, message])
-        self.client.describe(
-            self.channel,
-            "will now wait for the user to join/rejoin the channel.")
+        self.client.describe(self.channel, "will now wait for the user.")
