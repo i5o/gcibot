@@ -20,6 +20,7 @@
 import re
 import requests
 import json
+from logged_data import GoogleSession
 
 organizations = {
     5382353857806336: "Apertium",
@@ -42,6 +43,7 @@ organizations = {
 }
 
 api_link = "https://codein.withgoogle.com/api/program/2016/taskdefinition/{taskid}/"
+priv_link = "https://codein.withgoogle.com/dashboard/task-instances/{taskid}/"
 regex_tasks_1 = re.compile(
     ur'https{0,1}:\/\/codein\.withgoogle\.com\/tasks\/([0-9]+)\/{0,1}')
 regex_tasks_2 = re.compile(
@@ -55,6 +57,7 @@ class TaskFinder():
 
     def __init__(self, client):
         self.client = client
+        self.google_session = GoogleSession()
 
     def process_msg(self, msg, channel, user):
         msg_tasks = []
@@ -71,8 +74,15 @@ class TaskFinder():
 
         for task in tasks_id:
             if task[0] == 1:
-                self.client.describe(channel, "link not supported")
-                return []
+                try:
+                    task_link = self.google_session.get_public_link(
+                        priv_link.format(taskid=task[1]))
+                    ids = re.findall(regex_tasks_1, task_link)
+                    task = [0, ids[0]]
+                except:
+                    self.client.describe(
+                        channel, "can't do anything about that link.")
+                    return []
 
             json_ = requests.get(api_link.format(taskid=task[1]))
             json_task = json.loads(json_.text)

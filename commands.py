@@ -74,7 +74,7 @@ class Commands():
         done = False
         output = None
 
-        for c in commands:
+        for c in commands, "bored":
             if c in msg.lower() and not done:
                 command = c.replace(" ", "_").replace("!", "")
                 output = eval("self.%s()" % command)
@@ -179,3 +179,10 @@ class Commands():
 
         str_ignored = str(self.ignored_users)
         self.client.describe(self.channel, "is ignoring %s" % str_ignored)
+
+    def bored(self):
+        if not self.is_admin():
+            return
+
+        for channel in self.client.channels:
+            self.client.describe(channel, "is bored :(")

@@ -34,6 +34,7 @@ class GCIBot(irc.IRCClient):
     nickname = data.nickname
     username = data.username
     password = data.password
+    channels = []
 
     def __init__(self):
         self.commands = Commands(self)
@@ -44,6 +45,12 @@ class GCIBot(irc.IRCClient):
 
     def connectionLost(self, reason):
         irc.IRCClient.connectionLost(self, reason)
+
+    def joined(self, channel):
+        self.channels.append(channel)
+
+    def left(self, channel):
+        self.channels.remove(channel)
 
     def signedOn(self):
         for c in self.factory.channels:
