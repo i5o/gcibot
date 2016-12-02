@@ -28,13 +28,14 @@ public_commands = [
     "faq",
     "timeline",
     "!floss",
-    "!license"]
+    "!license",
+    "help"]
 
 commands = ["commands", "ping", "about", "rules", "guide", "faq",
             "timeline", "leave this channel", "join",
             "no longer ignore", "ignore", "!license", "ignoring",
             "add admin", "remove admin", "admins", "bored", "!floss",
-            "!sugar", "i love you", "coffee"]
+            "!sugar", "i love you", "coffee", "help"]
 
 no_interaction_required = ["!license", "!floss", "!sugar"]
 
@@ -101,6 +102,9 @@ class Commands():
             return False
 
         return True
+
+    def help(self):
+        return self.about() + "\nTry 'gcibot, commands' for more commands."
 
     def i_love_you(self):
         return "%s, I love you too 💕" % self.human_user
