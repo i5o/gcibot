@@ -20,11 +20,21 @@
 import re
 import time
 
+public_commands = [
+    "ping",
+    "about",
+    "rules",
+    "guide",
+    "faq",
+    "timeline",
+    "!floss",
+    "!license"]
+
 commands = ["commands", "ping", "about", "rules", "guide", "faq",
             "timeline", "leave this channel", "join",
             "no longer ignore", "ignore", "!license", "ignoring",
             "add admin", "remove admin", "admins", "bored", "!floss",
-            "!sugar"]
+            "!sugar", "i love you", "coffee"]
 
 no_interaction_required = ["!license", "!floss", "!sugar"]
 
@@ -91,6 +101,9 @@ class Commands():
             return False
 
         return True
+
+    def i_love_you(self):
+        return "%s, I love you too 💕" % self.human_user
 
     def ping(self):
         return "%s, pong" % self.human_user
@@ -181,18 +194,20 @@ class Commands():
                 (user, links["floss"]))
 
     def sugar(self):
-        finder = re.compile(ur'!sugar ([\S*]+)')
-        users = finder.findall(self.msg.lower())
-        for user in users:
-            self.client.msg(
-                self.channel,
-                "%s, Chemical compounds of sugar | glucose (C_6 H_12 O_6) and sucrose (C_12 H_22 O_11) | See: https://en.wikipedia.org/wiki/Sugar" %
-                user)
+        self.client.msg(
+            self.channel,
+            "Chemical compounds of sugar | glucose (C_6 H_12 O_6) and sucrose (C_12 H_22 O_11) | See: https://en.wikipedia.org/wiki/Sugar")
+
+    def coffee(self):
+        self.client.msg(
+            self.channel,
+            "%s, here is your coffee ☕" %
+            self.human_user)
 
     def commands(self):
         self.client.msg(
             self.channel, "%s, %s" %
-            (self.human_user, ", ".join(commands)))
+            (self.human_user, ", ".join(public_commands)))
 
     def ignoring(self):
         if not self.is_admin():
