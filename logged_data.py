@@ -43,8 +43,6 @@ class GoogleSession:
             "https://accounts.google.com/ServiceLoginAuth",
             data=my_dict)
 
-        print "hello world"
-
     def get(self, URL):
         return self.ses.get(URL).text
 
