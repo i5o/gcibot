@@ -23,9 +23,10 @@ import time
 commands = ["commands", "ping", "about", "rules", "guide", "faq",
             "timeline", "leave this channel", "join",
             "no longer ignore", "ignore", "!license", "ignoring",
-            "add admin", "remove admin", "admins", "bored", "!floss"]
+            "add admin", "remove admin", "admins", "bored", "!floss",
+            "!sugar"]
 
-no_interaction_required = ["!license", "!floss"]
+no_interaction_required = ["!license", "!floss", "!sugar"]
 
 about_data = "I'm a bot written by Ignacio, paste GCI link task and \
 I will tell data about it.\nSource code available in: https://github.com/i5o/gcibot"
@@ -173,11 +174,20 @@ class Commands():
 
     def floss(self):
         finder = re.compile(ur'!floss ([\S*]+)')
-        users = finder.findall(self.msg)
+        users = finder.findall(self.msg.lower())
         for user in users:
             self.client.msg(
                 self.channel, "%s, please read: %s" %
                 (user, links["floss"]))
+
+    def sugar(self):
+        finder = re.compile(ur'!sugar ([\S*]+)')
+        users = finder.findall(self.msg.lower())
+        for user in users:
+            self.client.msg(
+                self.channel,
+                "%s, Chemical compounds of sugar | glucose (C_6 H_12 O_6) and sucrose (C_12 H_22 O_11) | See: https://en.wikipedia.org/wiki/Sugar" %
+                user)
 
     def commands(self):
         self.client.msg(
