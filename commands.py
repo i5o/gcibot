@@ -22,9 +22,10 @@ import time
 
 commands = ["commands", "ping", "about", "rules", "guide", "faq",
             "timeline", "leave this channel", "join",
-            "no longer ignore", "ignore", "!licensing", "ignoring"]
+            "no longer ignore", "ignore", "!license", "ignoring", 
+            "add admin", "remove admin", "admins"]
 
-no_interaction_required = ["!licensing"]
+no_interaction_required = ["!license"]
 
 about_data = "I'm a bot written by Ignacio, paste GCI link task and \
 I will tell data about it.\nSource code available in: https://github.com/i5o/gcibot"
@@ -35,6 +36,7 @@ links = {
     "faq": "https://developers.google.com/open-source/gci/faq",
     "timeline": "https://developers.google.com/open-source/gci/timeline"}
 
+top_admin = "@unaffiliated/ignacio"
 admins = ["@unaffiliated/ignacio"]
 
 licensing_info = "Attribution and Licensing\nPlease read: http://people.sugarlabs.org/ignacio/about_licensing.txt"
@@ -49,6 +51,8 @@ class Commands():
         self.user = None
         self.human_user = None
         self.ignored_users = ["meeting"]
+        
+        self.pending_msgs = []
 
     def process_msg(self, msg, channel, user):
         self.msg = msg
@@ -166,9 +170,7 @@ class Commands():
         finder = re.compile(ur'!licensing ([\S*]+)')
         users = finder.findall(self.msg)
         for user in users:
-            self.client.msg(user, licensing_info)
-            self.client.msg(self.channel,
-                            "%s, please check your private messages." % user)
+            self.client.msg(self.channel, "%s, %s" % user, licensing_info)
 
     def commands(self):
         self.client.msg(
@@ -188,3 +190,53 @@ class Commands():
 
         for channel in self.client.channels:
             self.client.describe(channel, "is bored :(")
+            
+    def remove_admin(self):
+        if not self.is_admin():
+            return
+        
+        finder = re.compile(ur'([\S*]+)')
+        users = finder.findall(self.msg)
+        users[0] = None
+        users[1] = None
+        users[2] = None
+        for user in users:
+            if user is None or user not in admins or top_admin in user.lower():
+                continue
+
+            admins.remove(user)
+            self.client.describe(self.channel, "no longer loves %s" %
+                                 user)
+                                 
+    def add_admin(self):
+        if not self.is_admin():
+            return
+        
+        finder = re.compile(ur'([\S*]+)')
+        users = finder.findall(self.msg)
+        users[0] = None
+        users[1] = None
+        users[2] = None
+        for user in users:
+            if user is None or user in admins:
+                continue
+
+            admins.append(user)
+            self.client.describe(self.channel, "loves %s" %
+                                 user)
+    def admins(self):
+        if not self.is_admin():
+            return
+
+        str_admins = str(admins)
+        self.client.describe(self.channel, "loves %s" % str_admins)
+        
+    def tell(self):
+        finder = re.compile(ur'([\S*]+)')
+        users[0] = None
+        users[1] = None
+        to = users[2]
+        message = "".join(users[3:len(users)])
+        self.pending_msgs.append([channel, to, message])
+        
+        

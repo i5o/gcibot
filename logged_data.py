@@ -29,7 +29,7 @@ class GoogleSession:
         login_html = self.ses.get(
             "https://accounts.google.com/ServiceLogin?service=ah&passive=true&continue=https%3A%2F%2Fappengine.google.com%2F_ah%2Fconflogin%3Fcontinue%3Dhttps%3A%2F%2Fcodein.withgoogle.com%2Fdashboard%2Ftask-instances%2F5055442791170048%2F&ltmpl#identifier")
         soup_login = BeautifulSoup(
-            login_html.content).find('form').find_all('input')
+            login_html.content, "lxml").find('form').find_all('input')
         my_dict = {}
 
         for u in soup_login:
