@@ -23,7 +23,7 @@ import time
 commands = ["commands", "ping", "about", "rules", "guide", "faq",
             "timeline", "leave this channel", "join",
             "no longer ignore", "ignore", "!license", "ignoring", 
-            "add admin", "remove admin", "admins"]
+            "add admin", "remove admin", "admins", "bored", "floss"]
 
 no_interaction_required = ["!license"]
 
@@ -34,12 +34,13 @@ links = {
     "rules": "https://developers.google.com/open-source/gci/resources/contest-rules",
     "guide": "https://developers.google.com/open-source/gci/resources/getting-started",
     "faq": "https://developers.google.com/open-source/gci/faq",
-    "timeline": "https://developers.google.com/open-source/gci/timeline"}
+    "timeline": "https://developers.google.com/open-source/gci/timeline",
+    "floss": "https://www.gnu.org/philosophy/free-sw.html"}
 
 top_admin = "@unaffiliated/ignacio"
 admins = ["@unaffiliated/ignacio"]
 
-licensing_info = "Attribution and Licensing\nPlease read: http://people.sugarlabs.org/ignacio/about_licensing.txt"
+licensing_info = "please read: http://people.sugarlabs.org/ignacio/about_licensing.txt"
 
 
 class Commands():
@@ -78,19 +79,20 @@ class Commands():
         done = False
         output = None
 
-        commands.append("bored")
         for c in commands:
             if c in msg.lower() and not done:
                 command = c.replace(" ", "_").replace("!", "")
                 output = eval("self.%s()" % command)
                 done = True
-        commands.remove("bored")
 
         if output is not None:
             self.client.msg(channel, output)
             return False
 
         return True
+
+    def floss(self):
+        return "%s, please read: %s" % (self.human_user, links["floss"])
 
     def ping(self):
         return "%s, pong" % self.human_user
@@ -166,11 +168,11 @@ class Commands():
             self.client.describe(self.channel, "is no longer ignoring %s" %
                                  user)
 
-    def licensing(self):
-        finder = re.compile(ur'!licensing ([\S*]+)')
+    def license(self):
+        finder = re.compile(ur'!license ([\S*]+)')
         users = finder.findall(self.msg)
         for user in users:
-            self.client.msg(self.channel, "%s, %s" % user, licensing_info)
+            self.client.msg(self.channel, "%s, %s" % (user, licensing_info))
 
     def commands(self):
         self.client.msg(
