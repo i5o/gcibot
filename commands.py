@@ -74,11 +74,13 @@ class Commands():
         done = False
         output = None
 
-        for c in commands, "bored":
+        commands.append("bored")
+        for c in commands:
             if c in msg.lower() and not done:
                 command = c.replace(" ", "_").replace("!", "")
                 output = eval("self.%s()" % command)
                 done = True
+        commands.remove("bored")
 
         if output is not None:
             self.client.msg(channel, output)
