@@ -29,13 +29,14 @@ public_commands = [
     "timeline",
     "!floss",
     "!license",
-    "help"]
+    "help",
+    "memo"]
 
 commands = ["commands", "ping", "about", "rules", "guide", "faq",
             "timeline", "leave this channel", "join",
             "no longer ignore", "ignore", "!license", "ignoring",
             "add admin", "remove admin", "admins", "bored", "!floss",
-            "!sugar", "i love you", "coffee", "help"]
+            "!sugar", "i love you", "coffee", "help", "memo"]
 
 no_interaction_required = ["!license", "!floss", "!sugar"]
 
@@ -269,11 +270,15 @@ class Commands():
         self.client.describe(self.channel, "loves %s" % str_admins)
 
     def memo(self):
-        self.client.describe(self.channel, "wip")
-        return
         finder = re.compile(ur'([\S*]+)')
+        users = finder.findall(self.msg)
+
         users[0] = None
         users[1] = None
         to = users[2]
-        message = "".join(users[3:len(users)])
-        self.pending_msgs.append([channel, to, message])
+        message = " ".join(users[3:len(users)])
+
+        self.pending_msgs.append([self.channel, to, self.human_user, message])
+        self.client.describe(
+            self.channel,
+            "will now wait for the user to join/rejoin the channel.")

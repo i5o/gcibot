@@ -65,9 +65,19 @@ class GCIBot(irc.IRCClient):
                 self.msg(channel, task)
 
     def userJoined(self, user, channel):
-        # for msg in self.pending_msgs:
-        #    if msg[1] =
-        pass
+        human_user = user.split('!', 1)[0].lower()
+        msgs_to_remove = []
+        for msg in self.commands.pending_msgs:
+            if msg[1].lower() == human_user:
+                self.msg(
+                    human_user,
+                    "Message from '%s' in channel '%s': - %s -" % (msg[2],
+                                                                   msg[0],
+                                                                   msg[3]))
+                msgs_to_remove.append(msg)
+
+        for msg in msgs_to_remove:
+            self.commands.pending_msgs.remove(msg)
 
 
 class BotFactory(protocol.ClientFactory):
