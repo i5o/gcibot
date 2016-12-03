@@ -32,8 +32,8 @@ public_commands = [
     "!thanks",
     "!musicblocks",
     "help",
-    "memo",
-    "pending memos"]
+    "pending memos",
+    "memo"]
 
 commands = [
     "commands",
@@ -58,10 +58,10 @@ commands = [
     "i love you",
     "!coffee",
     "help",
+    "pending memos",
     "memo",
     "!thanks",
-    "!musicblocks",
-    "pending memos"]
+    "!musicblocks",]
 
 no_interaction_required = [
     "!license",
