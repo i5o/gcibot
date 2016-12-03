@@ -36,6 +36,7 @@ public_commands = [
     "memo"]
 
 commands = [
+    "memo",
     "commands",
     "ping",
     "about",
@@ -59,9 +60,9 @@ commands = [
     "!coffee",
     "help",
     "pending memos",
-    "memo",
     "!thanks",
-    "!musicblocks",]
+    "!musicblocks",
+    "!high5"]
 
 no_interaction_required = [
     "!license",
@@ -69,7 +70,8 @@ no_interaction_required = [
     "!sugar",
     "!musicblocks",
     "!coffee",
-    "!thanks"]
+    "!thanks",
+    "!high5"]
 
 about_data = "I'm a bot written by Ignacio, paste GCI link task and \
 I will tell data about it.\nSource code available in: https://github.com/i5o/gcibot"
@@ -136,6 +138,9 @@ class Commands():
             return False
 
         return True
+
+    def high5(self):
+        self.client.describe(self.channel, "HIGH FIVES ALL AROUND!!!")
 
     def help(self):
         return self.about() + "\nTry 'gcibot, commands' for more commands."
@@ -364,7 +369,7 @@ class Commands():
     def pending_memos(self):
         pending = []
         for memo in self.pending_msgs:
-            if memo[3] == self.human_user:
-                pending.append("to %s at %s" % (memo[1], memo[4]))
+            if memo[2] == self.human_user:
+                pending.append("'%s' to %s at %s" % (memo[3], memo[1], memo[4]))
                 
         self.client.msg(self.human_user, str(pending))
