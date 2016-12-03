@@ -79,7 +79,6 @@ class GCIBot(irc.IRCClient):
                     self.msg(
                         human_user,
                         "Message from '%s': %s" % (msg[2],
-                                                   chan,
                                                    msg[3]))
                 else:
                     self.msg(

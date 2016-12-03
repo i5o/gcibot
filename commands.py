@@ -18,7 +18,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>
 
 import re
-import time
+import datetime
 
 public_commands = [
     "ping",
@@ -32,7 +32,8 @@ public_commands = [
     "!thanks",
     "!musicblocks",
     "help",
-    "memo"]
+    "memo",
+    "pending memos"]
 
 commands = [
     "commands",
@@ -59,7 +60,8 @@ commands = [
     "help",
     "memo",
     "!thanks",
-    "!musicblocks"]
+    "!musicblocks",
+    "pending memos"]
 
 no_interaction_required = [
     "!license",
@@ -355,6 +357,14 @@ class Commands():
         if chan == "gcibot":
             chan = self.human_user
 
-        self.pending_msgs.append([self.channel, to, self.human_user, message])
+        self.pending_msgs.append([self.channel, to, self.human_user, message, datetime.datetime.now().strftime("%H:%M %D")])
 
         self.client.msg(chan, "I'll wait for the user.")
+        
+    def pending_memos(self):
+        pending = []
+        for memo in self.pending_msgs:
+            if memo[3] == self.human_user:
+                pending.append("to %s at %s" % (memo[1], memo[4]))
+                
+        self.client.msg(self.human_user, str(pending))
