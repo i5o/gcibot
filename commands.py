@@ -351,6 +351,10 @@ class Commands():
         to = users[2]
         message = " ".join(users[3:len(users)])
 
+        chan = self.channel
+        if chan == "gcibot":
+            chan = self.human_user
+
         self.pending_msgs.append([self.channel, to, self.human_user, message])
-        print self.channel
-        self.client.msg(self.channel, "I'll wait for the user.")
+
+        self.client.msg(chan, "I'll wait for the user.")
