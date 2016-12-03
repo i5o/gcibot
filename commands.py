@@ -29,19 +29,50 @@ public_commands = [
     "timeline",
     "!floss",
     "!license",
+    "!thanks",
+    "!musicblocks",
     "help",
     "memo"]
 
-commands = ["commands", "ping", "about", "rules", "guide", "faq",
-            "timeline", "leave this channel", "join",
-            "no longer ignore", "ignore", "!license", "ignoring",
-            "add admin", "remove admin", "admins", "bored", "!floss",
-            "!sugar", "i love you", "coffee", "help", "memo"]
+commands = [
+    "commands",
+    "ping",
+    "about",
+    "rules",
+    "guide",
+    "faq",
+    "timeline",
+    "leave this channel",
+    "join",
+    "no longer ignore",
+    "ignore",
+    "!license",
+    "ignoring",
+    "add admin",
+    "remove admin",
+    "admins",
+    "bored",
+    "!floss",
+    "!sugar",
+    "i love you",
+    "!coffee",
+    "help",
+    "memo",
+    "!thanks",
+    "!musicblocks"]
 
-no_interaction_required = ["!license", "!floss", "!sugar"]
+no_interaction_required = [
+    "!license",
+    "!floss",
+    "!sugar",
+    "!musicblocks",
+    "!coffee",
+    "!thanks"]
 
 about_data = "I'm a bot written by Ignacio, paste GCI link task and \
 I will tell data about it.\nSource code available in: https://github.com/i5o/gcibot"
+
+music_blocks = """Music Blocks code is here: https://github.com/walterbender/musicblocks You can try Music Blocks at https://play.musicblocks.net. Also, WE CURRENTLY RECOMMEND FIREFOX, because of a bug with Chrome/ium (currently versions 53+ plays wrong notes)."""
 
 links = {
     "rules": "https://developers.google.com/open-source/gci/resources/contest-rules",
@@ -187,16 +218,31 @@ class Commands():
     def license(self):
         finder = re.compile(ur'!license ([\S*]+)')
         users = finder.findall(self.msg)
+        done = False
         for user in users:
             self.client.msg(self.channel, "%s, %s" % (user, licensing_info))
+
+            done = True
+
+        if not done:
+            self.client.msg(
+                self.channel, "%s, %s" %
+                (self.human_user, licensing_info))
 
     def floss(self):
         finder = re.compile(ur'!floss ([\S*]+)')
         users = finder.findall(self.msg.lower())
+        done = False
         for user in users:
             self.client.msg(
                 self.channel, "%s, please read: %s" %
                 (user, links["floss"]))
+            done = True
+
+        if not done:
+            self.client.msg(
+                self.channel, "%s, please read: %s" %
+                (self.human_user, links["floss"]))
 
     def sugar(self):
         self.client.msg(
@@ -204,10 +250,37 @@ class Commands():
             "Chemical compounds of sugar | glucose (C_6 H_12 O_6) and sucrose (C_12 H_22 O_11) | See: https://en.wikipedia.org/wiki/Sugar")
 
     def coffee(self):
+        finder = re.compile(ur'!coffee ([\S*]+)')
+        users = finder.findall(self.msg.lower())
+        done = False
+        for user in users:
+            self.client.msg(
+                self.channel, "%s, here is your coffee ☕" % user)
+            done = True
+
+        if not done:
+            self.client.msg(
+                self.channel, "%s, here is your coffee ☕" % self.human_user)
+
+    def thanks(self):
         self.client.msg(
             self.channel,
-            "%s, here is your coffee ☕" %
+            "%s, you are quite welcome. :)" %
             self.human_user)
+
+    def musicblocks(self):
+        finder = re.compile(ur'!musicblocks ([\S*]+)')
+        users = finder.findall(self.msg.lower())
+        done = False
+        for user in users:
+            self.client.msg(
+                self.channel, "%s, %s" %
+                (user, music_blocks))
+            done = True
+        if not done:
+            self.client.msg(
+                self.channel, "%s, %s" %
+                (self.human_user, music_blocks))
 
     def commands(self):
         self.client.msg(
