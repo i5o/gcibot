@@ -36,6 +36,7 @@ public_commands = [
     "memo"]
 
 commands = [
+    "pending memos",
     "memo",
     "commands",
     "ping",
@@ -59,7 +60,6 @@ commands = [
     "i love you",
     "!coffee",
     "help",
-    "pending memos",
     "!thanks",
     "!musicblocks",
     "!high5"]
