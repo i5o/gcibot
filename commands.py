@@ -19,6 +19,7 @@
 
 import re
 import datetime
+import data
 
 public_commands = [
     "ping",
@@ -411,16 +412,21 @@ class Commands():
 
     def you_can_stand(self):
         return "under my umbrella (ella, ella, eh, eh)"
-        
+
     def i_rock(self):
         return "%s, sure.." % self.human_user
-        
+
     def you_rock(self):
-        return "%s, I know :)" % self.human_user 
+        return "%s, I know :)" % self.human_user
 
     def register(self):
         if not self.is_admin():
             return
 
-        self.msg("NickServ", "identify " + data.username + " " + data.password)
-        self.msg("NickServ", "release " + data.nickname)
+        self.client.msg(
+            "NickServ",
+            "identify " +
+            data.username +
+            " " +
+            data.password)
+        self.client.msg("NickServ", "release " + data.nickname)
