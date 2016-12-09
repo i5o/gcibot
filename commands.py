@@ -29,7 +29,7 @@ public_commands = [
     "timeline",
     "!floss",
     "!license",
-    "!thanks",
+    "thanks",
     "!musicblocks",
     "help",
     "pending memos",
@@ -62,7 +62,8 @@ commands = [
     "help",
     "!thanks",
     "!musicblocks",
-    "!high5"]
+    "!high5",
+    "thanks"]
 
 no_interaction_required = [
     "!license",
@@ -362,14 +363,20 @@ class Commands():
         if chan == "gcibot":
             chan = self.human_user
 
-        self.pending_msgs.append([self.channel, to, self.human_user, message, datetime.datetime.now().strftime("%H:%M %D")])
+        self.pending_msgs.append([self.channel,
+                                  to,
+                                  self.human_user,
+                                  message,
+                                  datetime.datetime.now().strftime("%H:%M %D")])
 
         self.client.msg(chan, "I'll wait for the user.")
-        
+
     def pending_memos(self):
         pending = []
         for memo in self.pending_msgs:
             if memo[2] == self.human_user:
-                pending.append("'%s' to %s at %s" % (memo[3], memo[1], memo[4]))
-                
+                pending.append(
+                    "'%s' to %s at %s" %
+                    (memo[3], memo[1], memo[4]))
+
         self.client.msg(self.human_user, str(pending))
