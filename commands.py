@@ -70,7 +70,9 @@ commands = [
     "!hi5",
     "thanks",
     "!nick",
-    "hi"]
+    "hi",
+    "!hi",
+    "!register"]
 
 no_interaction_required = [
     "!license",
@@ -81,7 +83,8 @@ no_interaction_required = [
     "!thanks",
     "!high5",
     "!hi5",
-    "!nick"]
+    "!nick",
+    "!register"]
 
 about_data = "I'm a bot written by Ignacio, paste GCI link task and \
 I will tell data about it.\nSource code available in: https://github.com/i5o/gcibot"
@@ -414,3 +417,10 @@ class Commands():
         
     def you_rock(self):
         return "%s, I know :)" % self.human_user 
+
+    def register(self):
+        if not self.is_admin():
+            return
+
+        self.msg("NickServ", "identify " + data.username + " " + data.password)
+        self.msg("NickServ", "release " + data.nickname)
