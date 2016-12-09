@@ -420,8 +420,9 @@ class Commands():
         return "%s, I know :)" % self.human_user
 
     def register(self, ignore_admin=False):
-        if not self.is_admin() and not ignore_admin:
-            return
+        if not ignore_admin:
+            if not self.is_admin()
+                return
 
         self.client.msg(
             "NickServ",
