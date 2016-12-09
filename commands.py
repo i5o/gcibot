@@ -33,11 +33,13 @@ public_commands = [
     "!musicblocks",
     "help",
     "pending memos",
-    "memo"]
+    "memo"
+    "hi"]
 
 commands = [
     "pending memos",
     "memo",
+    "you can stand",
     "commands",
     "ping",
     "about",
@@ -63,7 +65,10 @@ commands = [
     "!thanks",
     "!musicblocks",
     "!high5",
-    "thanks"]
+    "!hi5",
+    "thanks",
+    "!nick",
+    "hi"]
 
 no_interaction_required = [
     "!license",
@@ -72,7 +77,9 @@ no_interaction_required = [
     "!musicblocks",
     "!coffee",
     "!thanks",
-    "!high5"]
+    "!high5",
+    "!hi5",
+    "!nick"]
 
 about_data = "I'm a bot written by Ignacio, paste GCI link task and \
 I will tell data about it.\nSource code available in: https://github.com/i5o/gcibot"
@@ -139,6 +146,12 @@ class Commands():
             return False
 
         return True
+
+    def hi(self):
+        return "Hi %s :)" % self.human_user
+
+    def hi5(self):
+        self.high5()
 
     def high5(self):
         self.client.describe(self.channel, "HIGH FIVES ALL AROUND!!!")
@@ -380,3 +393,16 @@ class Commands():
                     (memo[3], memo[1], memo[4]))
 
         self.client.msg(self.human_user, str(pending))
+
+    def nick(self):
+        if not self.is_admin():
+            return
+
+        finder = re.compile(ur'!nick ([\S*]+)')
+        nicknames = finder.findall(self.msg.lower())
+
+        for nick in nicknames:
+            self.client.setNick(nick)
+
+    def you_can_stand(self):
+        return "under my umbrella (ella, ella, eh, eh)"

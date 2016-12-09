@@ -75,7 +75,7 @@ class GCIBot(irc.IRCClient):
         for msg in self.commands.pending_msgs:
             if msg[1].lower() == human_user:
                 chan = msg[0]
-                if chan == "gcibot":
+                if chan == self.nickname:
                     self.msg(
                         human_user,
                         "Message from '%s': %s" % (msg[2],
