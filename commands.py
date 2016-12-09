@@ -421,7 +421,7 @@ class Commands():
 
     def register(self, ignore_admin=False):
         if not ignore_admin:
-            if not self.is_admin()
+            if not self.is_admin():
                 return
 
         self.client.msg(
