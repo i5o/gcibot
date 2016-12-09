@@ -28,6 +28,7 @@ from twisted.words.protocols import irc
 
 
 logging.basicConfig(level=logging.DEBUG)
+welcome_back = []
 
 
 class GCIBot(irc.IRCClient):
@@ -68,9 +69,15 @@ class GCIBot(irc.IRCClient):
 
     def userJoined(self, user, channel):
         human_user = user.split('!', 1)[0]
-        
-        if "sugar" in str(channel) and not human_user.lower() in self.commands.ignored_users:
-            self.msg(channel, "Hi %s, welcome to #sugar" % human_user)
+
+        if "sugar" in str(channel) and not human_user.lower(
+        ) in self.commands.ignored_users:
+            if human_user in welcome_back:
+                self.msg(channel, "Hi %s, welcome back" % human_user)
+            else:
+                self.msg(channel, "Hi %s, welcome to #sugar" % human_user)
+
+        welcome_back.append(human_user)
         self.check_memo(user, channel)
 
     def check_memo(self, user, channel):
