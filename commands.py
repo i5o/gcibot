@@ -419,8 +419,8 @@ class Commands():
     def you_rock(self):
         return "%s, I know :)" % self.human_user
 
-    def register(self):
-        if not self.is_admin():
+    def register(self, ignore_admin=False):
+        if not self.is_admin() and not ignore_admin:
             return
 
         self.client.msg(

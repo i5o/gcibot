@@ -32,7 +32,7 @@ welcome_back = []
 
 
 class GCIBot(irc.IRCClient):
-    nickname = data.nickname
+    nickname = data.nickname + "-waiting"
     username = data.username
     password = data.password
     channels = []
@@ -42,6 +42,7 @@ class GCIBot(irc.IRCClient):
         self.tasks_finder = TaskFinder(self)
 
     def connectionMade(self):
+        self.commands.register(True)
         irc.IRCClient.connectionMade(self)
 
     def connectionLost(self, reason):
