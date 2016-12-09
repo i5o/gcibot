@@ -37,6 +37,8 @@ public_commands = [
     "hi"]
 
 commands = [
+    "i rock",
+    "you rock",
     "pending memos",
     "memo",
     "you can stand",
@@ -406,3 +408,9 @@ class Commands():
 
     def you_can_stand(self):
         return "under my umbrella (ella, ella, eh, eh)"
+        
+    def i_rock(self):
+        return "%s, sure.." % self.human_user
+        
+    def you_rock(self):
+        return "%, I know :)" % self.human_user 

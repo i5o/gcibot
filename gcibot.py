@@ -68,7 +68,8 @@ class GCIBot(irc.IRCClient):
 
     def userJoined(self, user, channel):
         human_user = user.split('!', 1)[0]
-        if "sugar" in str(channel):
+        
+        if "sugar" in str(channel) and not human_user.lower() in self.commands.ignored_users:
             self.msg(channel, "Hi %s, welcome to #sugar" % human_user)
         self.check_memo(user, channel)
 
