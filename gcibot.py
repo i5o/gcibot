@@ -32,7 +32,7 @@ welcome_back = []
 
 
 class GCIBot(irc.IRCClient):
-    nickname = data.nickname + "-waiting"
+    nickname = data.nickname + "-afk"
     username = data.username
     password = data.password
     channels = []
@@ -42,7 +42,6 @@ class GCIBot(irc.IRCClient):
         self.tasks_finder = TaskFinder(self)
 
     def connectionMade(self):
-        self.commands.register(True)
         irc.IRCClient.connectionMade(self)
 
     def connectionLost(self, reason):
@@ -57,6 +56,8 @@ class GCIBot(irc.IRCClient):
     def signedOn(self):
         for c in self.factory.channels:
             self.join(c)
+
+        self.commands.register(True)
 
     def privmsg(self, user, channel, msg):
         tasks = []
