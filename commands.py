@@ -413,4 +413,4 @@ class Commands():
         return "%s, sure.." % self.human_user
         
     def you_rock(self):
-        return "%, I know :)" % self.human_user 
+        return "%s, I know :)" % self.human_user 
