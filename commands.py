@@ -431,3 +431,4 @@ class Commands():
             " " +
             data.password)
         self.client.msg("NickServ", "release " + data.nickname)
+        self.client.setNick(data.nickname)
