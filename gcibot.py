@@ -67,8 +67,9 @@ class GCIBot(irc.IRCClient):
         self.check_memo(user, channel)
 
     def userJoined(self, user, channel):
-        human_user = user.split('!', 1)[0].lower()
-        self.msg(channel, "Hi %s, welcome to #sugar" % human_user)
+        human_user = user.split('!', 1)[0]
+        if "sugar" in str(channel):
+            self.msg(channel, "Hi %s, welcome to #sugar" % human_user)
         self.check_memo(user, channel)
 
     def check_memo(self, user, channel):
