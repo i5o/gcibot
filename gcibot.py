@@ -29,6 +29,7 @@ from twisted.words.protocols import irc
 
 logging.basicConfig(level=logging.DEBUG)
 welcome_back = []
+welcome_back_enabled = False
 
 
 class GCIBot(irc.IRCClient):
@@ -71,6 +72,9 @@ class GCIBot(irc.IRCClient):
 
     def userJoined(self, user, channel):
         human_user = user.split('!', 1)[0]
+
+        if not welcome_back_enabled:
+            return
 
         if "sugar" in str(channel) and not human_user.lower(
         ) in self.commands.ignored_users:

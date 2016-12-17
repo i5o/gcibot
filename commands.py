@@ -34,8 +34,9 @@ public_commands = [
     "!musicblocks",
     "help",
     "pending memos",
-    "memo"
-    "hi"]
+    "memo",
+    "hi",
+    "ignore me"]
 
 commands = [
     "i rock",
@@ -53,6 +54,7 @@ commands = [
     "leave this channel",
     "join",
     "no longer ignore",
+    "ignore me",
     "ignore",
     "!license",
     "ignoring",
@@ -123,7 +125,7 @@ class Commands():
         self.user = user
         self.human_user = user.split('!', 1)[0]
 
-        if self.human_user in self.ignored_users:
+        if self.human_user in self.ignored_users and not "ignore me" in self.msg:
             return False
 
         talking_to_me = msg.startswith(self.client.nickname + ":") \
@@ -225,6 +227,20 @@ class Commands():
 
             self.ignored_users.append(user)
             self.client.describe(self.channel, "is now ignoring %s" % user)
+
+    def ignore_me(self):
+        if self.human_user in self.ignored_users:
+            self.ignored_users.remove(self.human_user)
+            self.client.describe(
+                self.channel,
+                "is no longer ignoring  %s :)" %
+                self.human_user)
+        else:
+            self.ignored_users.append(self.human_user)
+            self.client.describe(
+                self.channel,
+                "is now ignoring %s :(" %
+                self.human_user)
 
     def no_longer_ignore(self):
         if not self.is_admin():
@@ -424,11 +440,12 @@ class Commands():
             if not self.is_admin():
                 return
 
-        self.client.msg(
-            "NickServ",
-            "identify " +
-            data.username +
-            " " +
-            data.password)
-        self.client.msg("NickServ", "release " + data.nickname)
-        self.client.setNick(data.nickname)
+        for blah in range(0, 2):
+            self.client.msg(
+                "NickServ",
+                "identify " +
+                data.username +
+                " " +
+                data.password)
+            self.client.msg("NickServ", "release " + data.nickname)
+            self.client.setNick(data.nickname)
