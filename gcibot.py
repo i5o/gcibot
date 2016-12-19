@@ -72,6 +72,7 @@ class GCIBot(irc.IRCClient):
 
     def userJoined(self, user, channel):
         human_user = user.split('!', 1)[0]
+        self.check_memo(user, channel)
 
         if not welcome_back_enabled:
             return
@@ -84,7 +85,6 @@ class GCIBot(irc.IRCClient):
                 self.msg(channel, "Hi %s, welcome to #sugar" % human_user)
 
         welcome_back.append(human_user)
-        self.check_memo(user, channel)
 
     def check_memo(self, user, channel):
         human_user = user.split('!', 1)[0].lower()
