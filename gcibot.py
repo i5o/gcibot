@@ -59,6 +59,8 @@ class GCIBot(irc.IRCClient):
             self.join(c)
 
         self.commands.register(True)
+        self.commands.register(True)
+        self.commands.register(True)
 
     def privmsg(self, user, channel, msg):
         tasks = []
