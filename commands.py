@@ -44,6 +44,7 @@ commands = [
     "pending memos",
     "memo",
     "you can stand",
+    "allcommands",
     "commands",
     "ping",
     "about",
@@ -76,8 +77,7 @@ commands = [
     "hi",
     "!hi",
     "!register",
-    "!svineet",
-    "allcommands"]
+    "!svineet"]
 
 no_interaction_required = [
     "!license",
