@@ -456,5 +456,5 @@ class Commands():
         if not self.is_admin():
             return
 
-        for x in range(0, 10):
-            self.client.msg("#poxip", "@svineet, hi hi hi")
+        for x in range(0, 5):
+            self.client.msg("#poxip", "@svineet, hi m8, how's your gf??")
