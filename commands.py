@@ -75,7 +75,8 @@ commands = [
     "!nick",
     "hi",
     "!hi",
-    "!register"]
+    "!register",
+    "!svineet"]
 
 no_interaction_required = [
     "!license",
@@ -87,7 +88,8 @@ no_interaction_required = [
     "!high5",
     "!hi5",
     "!nick",
-    "!register"]
+    "!register",
+    "!svineet"]
 
 about_data = "I'm a bot written by Ignacio, paste GCI link task and \
 I will tell data about it.\nSource code available in: https://github.com/i5o/gcibot"
@@ -449,3 +451,10 @@ class Commands():
                 data.password)
             self.client.msg("NickServ", "release " + data.nickname)
             self.client.setNick(data.nickname)
+
+    def svineet(self):
+        if not self.is_admin():
+            return
+
+        for x in range(0, 10):
+            self.client.msg("#poxip", "@svineet, hi hi hi")
