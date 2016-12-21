@@ -70,7 +70,7 @@ class GCIBot(irc.IRCClient):
 
         self.check_memo(user, channel)
 
-        if self.nick != data.nickname:
+        if self.nickname != data.nickname:
             self.commands.register(True)
 
     def userJoined(self, user, channel):
