@@ -59,8 +59,6 @@ class GCIBot(irc.IRCClient):
             self.join(c)
 
         self.commands.register(True)
-        self.commands.register(True)
-        self.commands.register(True)
 
     def privmsg(self, user, channel, msg):
         tasks = []
@@ -71,6 +69,7 @@ class GCIBot(irc.IRCClient):
                 self.msg(channel, task)
 
         self.check_memo(user, channel)
+        self.commands.register(True)
 
     def userJoined(self, user, channel):
         human_user = user.split('!', 1)[0]
