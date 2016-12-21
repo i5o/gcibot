@@ -76,7 +76,8 @@ commands = [
     "hi",
     "!hi",
     "!register",
-    "!svineet"]
+    "!svineet",
+    "allcommands"]
 
 no_interaction_required = [
     "!license",
@@ -104,7 +105,7 @@ links = {
     "floss": "https://www.gnu.org/philosophy/free-sw.html"}
 
 top_admin = "@unaffiliated/ignacio"
-admins = ["@unaffiliated/ignacio"]
+admins = ["@unaffiliated/ignacio", "@unaffiliated/tymonr"]
 
 licensing_info = "please read: http://people.sugarlabs.org/ignacio/about_licensing.txt"
 
@@ -331,6 +332,14 @@ class Commands():
         self.client.msg(
             self.channel, "%s, %s" %
             (self.human_user, ", ".join(public_commands)))
+
+    def allcommands(self):
+        if not self.is_admin():
+            return
+
+        self.client.msg(
+            self.channel, "%s, %s" %
+            (self.human_user, ", ".join(commands)))
 
     def ignoring(self):
         if not self.is_admin():
