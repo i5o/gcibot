@@ -127,7 +127,7 @@ class Commands():
         self.user = user
         self.human_user = user.split('!', 1)[0]
 
-        if self.human_user in self.ignored_users and not "ignore me" in self.msg:
+        if self.human_user in self.ignored_users and not "ignore me" in self.msg and not "@unaffiliated/ignacio" in self.user:
             return False
 
         talking_to_me = msg.startswith(self.client.nickname + ":") \
@@ -224,7 +224,7 @@ class Commands():
         users[0] = None
         users[1] = None
         for user in users:
-            if user is None or user in self.ignored_users:
+            if user is None or user in self.ignored_users or user in admins:
                 continue
 
             self.ignored_users.append(user)
@@ -390,7 +390,10 @@ class Commands():
 
     def admins(self):
         if not self.is_admin():
-            self.client.describe(self.channel, "has %s mysterious admins" % str(len(admins)))
+            self.client.describe(
+                self.channel,
+                "has %s mysterious admins" % str(
+                    len(admins)))
             return
 
         str_admins = str(admins)
@@ -467,4 +470,6 @@ class Commands():
 
         for x in range(0, 5):
             self.client.msg("#poxip", "@svineet, hi m8, how's your gf??")
-            self.client.msg("svineet", "hi m8, how's your gf?? are you even alive?????")
+            self.client.msg(
+                "svineet",
+                "hi m8, how's your gf?? are you even alive?????")
