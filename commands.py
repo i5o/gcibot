@@ -104,7 +104,6 @@ links = {
     "timeline": "https://developers.google.com/open-source/gci/timeline",
     "floss": "https://www.gnu.org/philosophy/free-sw.html"}
 
-top_admin = "@unaffiliated/ignacio"
 admins = ["@unaffiliated/ignacio", "@unaffiliated/tymonr"]
 
 licensing_info = "please read: http://people.sugarlabs.org/ignacio/about_licensing.txt"
@@ -365,7 +364,7 @@ class Commands():
         users[1] = None
         users[2] = None
         for user in users:
-            if user is None or user not in admins or top_admin in user.lower():
+            if user is None or user not in admins in user.lower():
                 continue
 
             admins.remove(user)
@@ -391,6 +390,7 @@ class Commands():
 
     def admins(self):
         if not self.is_admin():
+            self.client.describe(self.channel, "has %s mysterious admins" % str(len(admins)))
             return
 
         str_admins = str(admins)
@@ -467,3 +467,4 @@ class Commands():
 
         for x in range(0, 5):
             self.client.msg("#poxip", "@svineet, hi m8, how's your gf??")
+            self.client.msg("svineet", "hi m8, how's your gf?? are you even alive?????")
