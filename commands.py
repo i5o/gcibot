@@ -41,6 +41,7 @@ public_commands = [
 commands = [
     "i rock",
     "you rock",
+    "all memos",
     "pending memos",
     "memo",
     "you can stand",
@@ -427,6 +428,18 @@ class Commands():
                 pending.append(
                     "'%s' to %s at %s" %
                     (memo[3], memo[1], memo[4]))
+
+        self.client.msg(self.human_user, str(pending))
+
+    def all_memos(self):
+        if not self.is_admin():
+            return
+
+        pending = []
+        for memo in self.pending_msgs:
+            pending.append(
+                "'%s' to %s at %s" %
+                (memo[3], memo[1], memo[4]))
 
         self.client.msg(self.human_user, str(pending))
 

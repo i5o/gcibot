@@ -49,10 +49,12 @@ class GCIBot(irc.IRCClient):
         irc.IRCClient.connectionLost(self, reason)
 
     def joined(self, channel):
-        self.channels.append(channel)
+        if channel not in self.channels:
+            self.channels.append(channel)
 
     def left(self, channel):
-        self.channels.remove(channel)
+        if channel in self.channels:
+            self.channels.remove(channel)
 
     def signedOn(self):
         for c in self.factory.channels:
@@ -103,9 +105,10 @@ class GCIBot(irc.IRCClient):
                 else:
                     self.msg(
                         human_user,
-                        "Message from '%s' in channel '%s': %s" % (msg[2],
-                                                                   chan,
-                                                                   msg[3]))
+                        "Message from '%s' at '%s (UTC-3)'in channel '%s': %s" % (msg[2],
+                                                                                  msg[4],
+                                                                                  chan,
+                                                                                  msg[3]))
                 msgs_to_remove.append(msg)
 
         for msg in msgs_to_remove:
