@@ -105,10 +105,10 @@ class GCIBot(irc.IRCClient):
                 else:
                     self.msg(
                         human_user,
-                        "Message from '%s' at '%s (UTC-3)'in channel '%s': %s" % (msg[2],
-                                                                                  msg[4],
-                                                                                  chan,
-                                                                                  msg[3]))
+                        "Message from '%s' at '%s (UTC-3)' in channel '%s': %s" % (msg[2],
+                                                                                   msg[4],
+                                                                                   chan,
+                                                                                   msg[3]))
                 msgs_to_remove.append(msg)
 
         for msg in msgs_to_remove:
