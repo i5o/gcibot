@@ -20,6 +20,7 @@
 import re
 import datetime
 import data
+from command_time import *
 
 public_commands = [
     "ping",
@@ -36,7 +37,8 @@ public_commands = [
     "pending memos",
     "memo",
     "hi",
-    "ignore me"]
+    "ignore me",
+    ".time"]
 
 commands = [
     "i rock",
@@ -79,7 +81,9 @@ commands = [
     "hi",
     "!hi",
     "!register",
-    "!svineet"]
+    "!svineet",
+    ".time",
+    ".hny"]
 
 no_interaction_required = [
     "!license",
@@ -93,7 +97,9 @@ no_interaction_required = [
     "!hi5",
     "!nick",
     "!register",
-    "!svineet"]
+    "!svineet",
+    ".time",
+    ".hny"]
 
 about_data = "I'm a bot written by Ignacio, paste GCI link task and \
 I will tell data about it.\nSource code available in: https://github.com/i5o/gcibot"
@@ -150,7 +156,13 @@ class Commands():
 
         for c in commands:
             if c in msg.lower() and not done:
-                command = c.replace(" ", "_").replace("!", "")
+                command = c.replace(
+                    " ",
+                    "_").replace(
+                    "!",
+                    "").replace(
+                    ".",
+                    "_")
                 output = eval("self.%s()" % command)
                 done = True
 
@@ -500,3 +512,26 @@ class Commands():
             self.client.msg(
                 "svineet",
                 "hi m8, how's your gf?? are you even alive?????")
+
+    def _time(self):
+        return get_time(self.msg, self.human_user)
+
+    def _hny(self):
+        finder = re.compile(ur'([\S*]+)')
+        addresses = finder.findall(self.msg)
+        if not addresses[0] == ".hny":
+            return None
+
+        addresses[0] = ""
+        cmd = " ".join(addresses)[1:]
+        try:
+            coords, lat, lng = get_coords(cmd)
+            txt_coords = "%s,%s" % (lat, lng)
+            time_data = get_time_data(txt_coords)
+            city_country = get_city_and_country(coords)
+            central, to_zone, str_time = convert_time(get_time_zone(time_data))
+
+            return "%s, %s" % (self.human_user, time_until(
+                city_country, central, to_zone))
+        except:
+            return "%s, Never heard of that place…" % (self.human_user)
