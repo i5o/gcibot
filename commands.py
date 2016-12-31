@@ -67,6 +67,7 @@ commands = [
     "!floss",
     "!sugar",
     "i love you",
+    "!tea",
     "!coffee",
     "help",
     "!thanks",
@@ -450,6 +451,7 @@ class Commands():
                 (memo[3], memo[1], memo[4]))
 
         self.client.msg(self.human_user, str(pending))
+        self.client.describe(self.channel, "%s pending memos" % len(self.pending_msgs))
 
     def nick(self):
         if not self.is_admin():
