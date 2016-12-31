@@ -79,7 +79,8 @@ commands = [
     "hi",
     "!hi",
     "!register",
-    "!svineet"]
+    "!svineet",
+    "sayplz"]
 
 no_interaction_required = [
     "!license",
@@ -129,7 +130,7 @@ class Commands():
         self.channel = channel
         self.user = user
         self.human_user = user.split('!', 1)[0]
-
+        
         if self.human_user in self.ignored_users and not "ignore me" in self.msg:
             return False
 
@@ -500,3 +501,18 @@ class Commands():
             self.client.msg(
                 "svineet",
                 "hi m8, how's your gf?? are you even alive?????")
+            
+    def sayplz(self):
+        if not self.is_admin():
+            return False
+        args = self.msg.split(' ')
+        args_no = len(args)
+        if args_no < 2:
+            return False
+        channel = args[0]
+        msg_h = ''
+        for i in range(1, args_no):
+            msg_h += args[i] + ' '
+
+        self.client.msg(channel, msg_h)
+        
