@@ -86,6 +86,7 @@ no_interaction_required = [
     "!sugar",
     "!musicblocks",
     "!coffee",
+    "!tea",
     "!thanks",
     "!high5",
     "!hi5",
@@ -128,7 +129,7 @@ class Commands():
         self.user = user
         self.human_user = user.split('!', 1)[0]
 
-        if self.human_user in self.ignored_users and not "ignore me" in self.msg and not "@unaffiliated/ignacio" in self.user:
+        if self.human_user in self.ignored_users and not "ignore me" in self.msg:
             return False
 
         talking_to_me = msg.startswith(self.client.nickname + ":") \
@@ -295,18 +296,24 @@ class Commands():
             self.channel,
             "Chemical compounds of sugar | glucose (C_6 H_12 O_6) and sucrose (C_12 H_22 O_11) | See: https://en.wikipedia.org/wiki/Sugar")
 
-    def coffee(self):
+    def coffee(self, is_tea = False):
         finder = re.compile(ur'!coffee ([\S*]+)')
         users = finder.findall(self.msg.lower())
         done = False
+        word = 'coffee'
+        if is_tea == True:
+            word = 'tea'
         for user in users:
             self.client.msg(
-                self.channel, "%s, here is your coffee ☕" % user)
+                self.channel, "%s, here is your %s ☕" % (user, word))
             done = True
 
         if not done:
             self.client.msg(
-                self.channel, "%s, here is your coffee ☕" % self.human_user)
+                self.channel, "%s, here is your %s ☕" % (self.human_user, word))
+
+    def tea(self):
+        self.coffee(self, True)
 
     def thanks(self):
         self.client.msg(
