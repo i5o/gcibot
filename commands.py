@@ -298,12 +298,13 @@ class Commands():
             "Chemical compounds of sugar | glucose (C_6 H_12 O_6) and sucrose (C_12 H_22 O_11) | See: https://en.wikipedia.org/wiki/Sugar")
 
     def coffee(self, is_tea=False):
-        finder = re.compile(ur'!coffee ([\S*]+)')
-        users = finder.findall(self.msg.lower())
-        done = False
         word = 'coffee'
         if is_tea:
             word = 'tea'
+
+        finder = re.compile(ur'!%s ([\S*]+)' % word)
+        users = finder.findall(self.msg.lower())
+        done = False
         for user in users:
             self.client.msg(
                 self.channel, "%s, here is your %s ☕" % (user, word))
@@ -451,7 +452,10 @@ class Commands():
                 (memo[3], memo[1], memo[4]))
 
         self.client.msg(self.human_user, str(pending))
-        self.client.describe(self.channel, "%s pending memos" % len(self.pending_msgs))
+        self.client.describe(
+            self.channel,
+            "has %s pending memos (to deliver)" % len(
+                self.pending_msgs))
 
     def nick(self):
         if not self.is_admin():
