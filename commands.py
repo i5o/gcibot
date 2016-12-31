@@ -316,7 +316,7 @@ class Commands():
                 (self.human_user, word))
 
     def tea(self):
-        self.coffee(self, True)
+        self.coffee(True)
 
     def thanks(self):
         self.client.msg(
