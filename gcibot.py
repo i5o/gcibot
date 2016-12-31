@@ -51,7 +51,6 @@ class GCIBot(irc.IRCClient):
     def joined(self, channel):
         if channel not in self.channels:
             self.channels.append(channel)
-            self.describe(channel, "script is now running")
 
     def left(self, channel):
         if channel in self.channels:

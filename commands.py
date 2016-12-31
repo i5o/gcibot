@@ -20,7 +20,7 @@
 import re
 import datetime
 import data
-from command_time import *
+from geonames_api import *
 
 public_commands = [
     "ping",
@@ -38,7 +38,8 @@ public_commands = [
     "memo",
     "hi",
     "ignore me",
-    ".time"]
+    ".time",
+    ".city"]
 
 commands = [
     "i rock",
@@ -83,7 +84,8 @@ commands = [
     "!register",
     "!svineet",
     ".time",
-    ".hny"]
+    ".hny",
+    ".city"]
 
 no_interaction_required = [
     "!license",
@@ -99,7 +101,8 @@ no_interaction_required = [
     "!register",
     "!svineet",
     ".time",
-    ".hny"]
+    ".hny",
+    ".city"]
 
 about_data = "I'm a bot written by Ignacio, paste GCI link task and \
 I will tell data about it.\nSource code available in: https://github.com/i5o/gcibot"
@@ -514,7 +517,17 @@ class Commands():
                 "hi m8, how's your gf?? are you even alive?????")
 
     def _time(self):
-        return get_time(self.msg, self.human_user)
+        finder = re.compile(ur'([\S*]+)')
+        addresses = finder.findall(self.msg)
+        if not self.msg.startswith(".time"):
+            return None
+
+        if not addresses[0] == ".time":
+            return None
+
+        addresses[0] = ""
+        cmd = " ".join(addresses)[1:]
+        return get_date_time(cmd)
 
     def _hny(self):
         finder = re.compile(ur'([\S*]+)')
@@ -524,14 +537,17 @@ class Commands():
 
         addresses[0] = ""
         cmd = " ".join(addresses)[1:]
-        try:
-            coords, lat, lng = get_coords(cmd)
-            txt_coords = "%s,%s" % (lat, lng)
-            time_data = get_time_data(txt_coords)
-            city_country = get_city_and_country(coords)
-            central, to_zone, str_time = convert_time(get_time_zone(time_data))
+        pass
 
-            return "%s, %s" % (self.human_user, time_until(
-                city_country, central, to_zone))
-        except:
-            return "%s, Never heard of that place…" % (self.human_user)
+    def _city(self):
+        finder = re.compile(ur'([\S*]+)')
+        addresses = finder.findall(self.msg)
+        if not self.msg.startswith(".city"):
+            return None
+
+        if not addresses[0] == ".city":
+            return None
+
+        addresses[0] = ""
+        cmd = " ".join(addresses)[1:]
+        return city(cmd)
