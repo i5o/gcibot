@@ -279,7 +279,7 @@ class Commands():
 
     def floss(self):
         finder = re.compile(ur'!floss ([\S*]+)')
-        users = finder.findall(self.msg.lower())
+        users = finder.findall(self.msg)
         done = False
         for user in users:
             self.client.msg(
@@ -303,7 +303,7 @@ class Commands():
             word = 'tea'
 
         finder = re.compile(ur'!%s ([\S*]+)' % word)
-        users = finder.findall(self.msg.lower())
+        users = finder.findall(self.msg)
         done = False
         for user in users:
             self.client.msg(
@@ -326,7 +326,7 @@ class Commands():
 
     def musicblocks(self):
         finder = re.compile(ur'!musicblocks ([\S*]+)')
-        users = finder.findall(self.msg.lower())
+        users = finder.findall(self.msg)
         done = False
         for user in users:
             self.client.msg(
@@ -462,7 +462,7 @@ class Commands():
             return
 
         finder = re.compile(ur'!nick ([\S*]+)')
-        nicknames = finder.findall(self.msg.lower())
+        nicknames = finder.findall(self.msg)
 
         for nick in nicknames:
             self.client.setNick(nick)
