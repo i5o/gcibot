@@ -296,12 +296,12 @@ class Commands():
             self.channel,
             "Chemical compounds of sugar | glucose (C_6 H_12 O_6) and sucrose (C_12 H_22 O_11) | See: https://en.wikipedia.org/wiki/Sugar")
 
-    def coffee(self, is_tea = False):
+    def coffee(self, is_tea=False):
         finder = re.compile(ur'!coffee ([\S*]+)')
         users = finder.findall(self.msg.lower())
         done = False
         word = 'coffee'
-        if is_tea == True:
+        if is_tea:
             word = 'tea'
         for user in users:
             self.client.msg(
@@ -310,7 +310,8 @@ class Commands():
 
         if not done:
             self.client.msg(
-                self.channel, "%s, here is your %s ☕" % (self.human_user, word))
+                self.channel, "%s, here is your %s ☕" %
+                (self.human_user, word))
 
     def tea(self):
         self.coffee(self, True)
