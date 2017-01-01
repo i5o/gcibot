@@ -20,6 +20,7 @@
 import re
 import datetime
 import data
+import geonames_api
 
 public_commands = [
     "ping",
@@ -36,11 +37,14 @@ public_commands = [
     "pending memos",
     "memo",
     "hi",
-    "ignore me"]
+    "ignore me",
+    ".time",
+    ".city"]
 
 commands = [
     "i rock",
     "you rock",
+    "ignacio rocks",
     "all memos",
     "pending memos",
     "memo",
@@ -80,7 +84,9 @@ commands = [
     "!hi",
     "!register",
     "!svineet",
-    "sayplz"]
+    "sayplz",
+    ".time",
+    ".city"]
 
 no_interaction_required = [
     "!license",
@@ -94,7 +100,10 @@ no_interaction_required = [
     "!hi5",
     "!nick",
     "!register",
-    "!svineet"]
+    "!svineet",
+    ".time",
+    ".hny",
+    ".city"]
 
 about_data = "I'm a bot written by Ignacio, paste GCI link task and \
 I will tell data about it.\nSource code available in: https://github.com/i5o/gcibot"
@@ -149,9 +158,17 @@ class Commands():
         done = False
         output = None
 
+        print msg
         for c in commands:
             if c in msg.lower() and not done:
-                command = c.replace(" ", "_").replace("!", "")
+                command = c.replace(
+                    " ",
+                    "_").replace(
+                    "!",
+                    "").replace(
+                    ".",
+                    "_")
+                print command
                 output = eval("self.%s()" % command)
                 done = True
 
@@ -477,6 +494,12 @@ class Commands():
     def you_rock(self):
         return "%s, I know :)" % self.human_user
 
+    def ignacio_rocks(self):
+        if not self.is_admin():
+            return False
+
+        return "%s, eh. plz... are you ok?" % self.human_user
+    
     def register(self, ignore_admin=False):
         if not ignore_admin:
             if not self.is_admin():
@@ -501,18 +524,47 @@ class Commands():
             self.client.msg(
                 "svineet",
                 "hi m8, how's your gf?? are you even alive?????")
-            
+         
     def sayplz(self):
         if not self.is_admin():
-            return False
+          return False
+
         args = self.msg.split(' ')
         args_no = len(args)
+
         if args_no < 2:
             return False
+        
         channel = args[0]
         msg_h = ''
         for i in range(1, args_no):
             msg_h += args[i] + ' '
 
         self.client.msg(channel, msg_h)
-        
+
+    def _time(self):
+        finder = re.compile(ur'([\S*]+)')
+        addresses = finder.findall(self.msg)
+        if not self.msg.startswith(".time"):
+            return None
+
+        if not addresses[0] == ".time":
+            return None
+
+        addresses[0] = ""
+        cmd = " ".join(addresses)[1:]
+        return geonames_api.get_date_time(cmd)
+
+    def _city(self):
+        finder = re.compile(ur'([\S*]+)')
+        addresses = finder.findall(self.msg)
+        if not self.msg.startswith(".city"):
+            return None
+
+        if not addresses[0] == ".city":
+            return None
+
+        addresses[0] = ""
+        cmd = " ".join(addresses)[1:]
+        return geonames_api.city(cmd)
+

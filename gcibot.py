@@ -33,7 +33,7 @@ welcome_back_enabled = False
 
 
 class GCIBot(irc.IRCClient):
-    nickname = data.nickname + "-afk"
+    nickname = data.nickname
     username = data.username
     password = data.password
     channels = []
@@ -72,8 +72,8 @@ class GCIBot(irc.IRCClient):
 
         self.check_memo(user, channel)
 
-        if self.nickname != data.nickname:
-            self.commands.register(True)
+        # if self.nickname != data.nickname:
+        #     self.commands.register(True)
 
     def userJoined(self, user, channel):
         human_user = user.split('!', 1)[0]
@@ -136,7 +136,7 @@ class BotFactory(protocol.ClientFactory):
 if __name__ == '__main__':
     logging.info('** Starting GCIBot **')
     f = BotFactory(sys.argv[1:])
-    reactor.connectTCP("irc.freenode.net", 6667, f)
+    reactor.connectTCP(data.server, data.port, f)
     logging.info('** Connected to server **')
     logging.info('** Channels: %s **' % ", ".join(sys.argv[1:]))
     reactor.run()

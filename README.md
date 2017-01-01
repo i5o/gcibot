@@ -10,6 +10,8 @@ nickname = "desired_nickname"
 password = "password_for_nickname"
 google_account = "account_for_lookup_tasks"
 google_password = "password_for_google_account"
+server = "irc.freenode.net"
+port = 6667
 ```
 
 And then
