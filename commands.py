@@ -44,6 +44,7 @@ public_commands = [
 commands = [
     "i rock",
     "you rock",
+    "ignacio rocks",
     "all memos",
     "pending memos",
     "memo",
@@ -493,6 +494,12 @@ class Commands():
     def you_rock(self):
         return "%s, I know :)" % self.human_user
 
+    def ignacio_rocks(self):
+        if not self.is_admin():
+            return False
+
+        return "%s, eh. plz... are you ok?" % self.human_user
+    
     def register(self, ignore_admin=False):
         if not ignore_admin:
             if not self.is_admin():
