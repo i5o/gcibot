@@ -84,8 +84,8 @@ commands = [
     "!hi",
     "!register",
     "!svineet",
+    "sayplz",
     ".time",
-    ".hny",
     ".city"]
 
 no_interaction_required = [
@@ -139,7 +139,7 @@ class Commands():
         self.channel = channel
         self.user = user
         self.human_user = user.split('!', 1)[0]
-
+        
         if self.human_user in self.ignored_users and not "ignore me" in self.msg:
             return False
 
@@ -524,6 +524,23 @@ class Commands():
             self.client.msg(
                 "svineet",
                 "hi m8, how's your gf?? are you even alive?????")
+         
+    def sayplz(self):
+        if not self.is_admin():
+          return False
+
+        args = self.msg.split(' ')
+        args_no = len(args)
+
+        if args_no < 2:
+            return False
+        
+        channel = args[0]
+        msg_h = ''
+        for i in range(1, args_no):
+            msg_h += args[i] + ' '
+
+        self.client.msg(channel, msg_h)
 
     def _time(self):
         finder = re.compile(ur'([\S*]+)')
@@ -538,16 +555,6 @@ class Commands():
         cmd = " ".join(addresses)[1:]
         return geonames_api.get_date_time(cmd)
 
-    def _hny(self):
-        finder = re.compile(ur'([\S*]+)')
-        addresses = finder.findall(self.msg)
-        if not addresses[0] == ".hny":
-            return None
-
-        addresses[0] = ""
-        cmd = " ".join(addresses)[1:]
-        pass
-
     def _city(self):
         finder = re.compile(ur'([\S*]+)')
         addresses = finder.findall(self.msg)
@@ -560,3 +567,4 @@ class Commands():
         addresses[0] = ""
         cmd = " ".join(addresses)[1:]
         return geonames_api.city(cmd)
+
