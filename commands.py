@@ -80,12 +80,12 @@ commands = [
     "!hi5",
     "thanks",
     "!nick",
-    "hi",
-    "!hi",
+    "sayplz",
     "!register",
     "!svineet",
-    "sayplz",
     ".time",
+    "hi",
+    "!hi",
     ".city"]
 
 no_interaction_required = [
@@ -158,7 +158,6 @@ class Commands():
         done = False
         output = None
 
-        print msg
         for c in commands:
             if c in msg.lower() and not done:
                 command = c.replace(
@@ -168,7 +167,6 @@ class Commands():
                     "").replace(
                     ".",
                     "_")
-                print command
                 output = eval("self.%s()" % command)
                 done = True
 
