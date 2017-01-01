@@ -23,11 +23,14 @@ def get_date_time(place):
     timezone_info = requests.get(TIME_URL.format(lat=lat, lng=lng)).json()
     time = datetime.strptime(timezone_info["time"], "%Y-%m-%d %H:%M")
     city = data["name"]
-    country = data["countryName"]
-    both = "%s, %s" % (city, country)
-
-    if city == country:
-        both = country
+    both = city
+    try:
+        country = data["countryName"]
+        both = "%s, %s" % (city, country)
+        if city == country:
+            both = country
+    except:
+        pass
 
     msg = "~~> %s ~~ %s ~~ %s" % (both, time.strftime(
         "%H:%M"), time.strftime("(%d/%m/%y)"))
