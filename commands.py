@@ -527,18 +527,14 @@ class Commands():
         if not self.is_admin():
             return False
 
-        args = self.msg.split(' ')
-        args_no = len(args)
+        finder = re.compile(ur'([\S*]+)')
+        xxxy = finder.findall(self.msg)
 
-        if args_no < 2:
-            return False
-
-        channel = args[0]
-        msg_h = ''
-        for i in range(1, args_no):
-            msg_h += args[i] + ' '
-
-        self.client.msg(channel, msg_h)
+        xxxy[0] = None
+        xxxy[1] = None
+        channel = xxxy[2]
+        message = " ".join(xxxy[3:])
+        self.client.msg(channel, message)
 
     def _time(self):
         finder = re.compile(ur'([\S*]+)')
