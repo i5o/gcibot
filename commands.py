@@ -20,7 +20,7 @@
 import re
 import datetime
 import data
-from geonames_api import *
+import geonames_api
 
 public_commands = [
     "ping",
@@ -157,6 +157,7 @@ class Commands():
         done = False
         output = None
 
+        print msg
         for c in commands:
             if c in msg.lower() and not done:
                 command = c.replace(
@@ -166,6 +167,7 @@ class Commands():
                     "").replace(
                     ".",
                     "_")
+                print command
                 output = eval("self.%s()" % command)
                 done = True
 
@@ -527,7 +529,7 @@ class Commands():
 
         addresses[0] = ""
         cmd = " ".join(addresses)[1:]
-        return get_date_time(cmd)
+        return geonames_api.get_date_time(cmd)
 
     def _hny(self):
         finder = re.compile(ur'([\S*]+)')
@@ -550,4 +552,4 @@ class Commands():
 
         addresses[0] = ""
         cmd = " ".join(addresses)[1:]
-        return city(cmd)
+        return geonames_api.city(cmd)
