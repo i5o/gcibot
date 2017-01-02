@@ -21,6 +21,7 @@ import re
 import datetime
 import data
 import geonames_api
+import subprocess
 
 public_commands = [
     "ping",
@@ -42,6 +43,7 @@ public_commands = [
     ".city"]
 
 commands = [
+    "sayplz",
     "i rock",
     "you rock",
     "ignacio rocks",
@@ -80,13 +82,14 @@ commands = [
     "!hi5",
     "thanks",
     "!nick",
-    "sayplz",
     "!register",
     "!svineet",
     ".time",
     "hi",
     "!hi",
-    ".city"]
+    ".city",
+    "uptime",
+    "df"]
 
 no_interaction_required = [
     "!license",
@@ -561,3 +564,11 @@ class Commands():
         addresses[0] = ""
         cmd = " ".join(addresses)[1:]
         return geonames_api.city(cmd)
+
+    def uptime(self):
+        up = subprocess.check_output("uptime")
+        self.client.msg(self.channel, up)
+
+    def df(self):
+        df = subprocess.check_output("df")
+        self.client(self.channel, df)
