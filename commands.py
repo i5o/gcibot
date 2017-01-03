@@ -89,7 +89,8 @@ commands = [
     "!hi",
     ".city",
     "uptime",
-    "df"]
+    "df",
+    "run"]
 
 no_interaction_required = [
     "!license",
@@ -570,5 +571,16 @@ class Commands():
         self.client.msg(self.channel, up)
 
     def df(self):
-        df = subprocess.check_output("df")
-        self.client(self.channel, df)
+        df = subprocess.check_output(["df", "-h"])
+        self.client.msg(self.channel, df)
+
+    def run(self):
+        if not "@unaffiliated/ignacio" in self.user:
+            return
+
+        command = self.msg[4:].split(" ")
+        try:
+            xx = subprocess.check_output(command)
+            self.client.describe(self.channel, xx)
+        except:
+            self.client.describe(self.channel, "error")
