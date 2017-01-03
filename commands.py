@@ -581,6 +581,6 @@ class Commands():
         command = self.msg[12:].split(" ")
         try:
             xx = subprocess.check_output(command)
-            self.client.describe(self.channel, xx)
+            self.client.msg(self.channel, xx)
         except:
-            self.client.describe(self.channel, "error")
+            self.client.msg(self.channel, "error")
