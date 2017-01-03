@@ -571,7 +571,7 @@ class Commands():
         self.client.msg(self.channel, up)
 
     def df(self):
-        df = subprocess.check_output(["df", "-h"])
+        df = subprocess.check_output(["df", "-h", "-x", "tmpfs"])
         self.client.msg(self.channel, df)
 
     def run(self):
