@@ -583,4 +583,4 @@ class Commands():
             xx = subprocess.check_output(command)
             self.client.msg(self.channel, xx)
         except Exception, error:
-            self.client.msg(self.channel, error)
+            self.client.msg(self.channel, str(error))
