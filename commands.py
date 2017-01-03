@@ -43,6 +43,7 @@ public_commands = [
     ".city"]
 
 commands = [
+    "run",
     "sayplz",
     "i rock",
     "you rock",
@@ -89,8 +90,7 @@ commands = [
     "!hi",
     ".city",
     "uptime",
-    "df",
-    "run"]
+    "df"]
 
 no_interaction_required = [
     "!license",
@@ -578,7 +578,7 @@ class Commands():
         if not "@unaffiliated/ignacio" in self.user:
             return
 
-        command = self.msg[4:].split(" ")
+        command = self.msg[12:].split(" ")
         try:
             xx = subprocess.check_output(command)
             self.client.describe(self.channel, xx)
