@@ -18,7 +18,6 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>
 
 from commands import Commands
-from task_data import TaskFinder
 import logging
 import data
 import sys
@@ -40,7 +39,6 @@ class GCIBot(irc.IRCClient):
 
     def __init__(self):
         self.commands = Commands(self)
-        self.tasks_finder = TaskFinder(self)
 
     def connectionMade(self):
         irc.IRCClient.connectionMade(self)
@@ -63,13 +61,7 @@ class GCIBot(irc.IRCClient):
         self.commands.register(True)
 
     def privmsg(self, user, channel, msg):
-        tasks = []
         result = self.commands.process_msg(msg, channel, user)
-        if result:
-            tasks = self.tasks_finder.process_msg(msg, channel, user)
-            for task in tasks:
-                self.msg(channel, task)
-
         self.check_memo(user, channel)
 
         # if self.nickname != data.nickname:
