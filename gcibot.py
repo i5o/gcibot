@@ -21,6 +21,7 @@ from task_data import TaskFinder
 import logging
 import data
 import sys
+import subprocess
 
 from twisted.internet import reactor, protocol
 from twisted.words.protocols import irc
@@ -63,6 +64,13 @@ class GCIBot(irc.IRCClient):
         for task in tasks:
             self.msg(channel, task)
 
+        talking_to_me = msg.startswith(self.client.nickname + ":") \
+            or msg.startswith(self.client.nickname + ",") \
+            or msg.startswith(self.client.nickname + " ")
+
+        if talking_to_me and "uptime" in msg.lower():
+            self.uptime(channel)
+
     def userJoined(self, user, channel):
         human_user = user.split('!', 1)[0]
         self.check_memo(user, channel)
@@ -101,6 +109,11 @@ class GCIBot(irc.IRCClient):
 
         for msg in msgs_to_remove:
             self.commands.pending_msgs.remove(msg)
+
+    def uptime(self, channel):
+        host = subprocess.check_output("hostname").replace("\n", " ")
+        up = subprocess.check_output("uptime").replace("\n", " ")
+        self.msg(channel, "%s %s" % (host, up))
 
 
 class BotFactory(protocol.ClientFactory):
