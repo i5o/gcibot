@@ -64,9 +64,9 @@ class GCIBot(irc.IRCClient):
         for task in tasks:
             self.msg(channel, task)
 
-        talking_to_me = msg.startswith(self.client.nickname + ":") \
-            or msg.startswith(self.client.nickname + ",") \
-            or msg.startswith(self.client.nickname + " ")
+        talking_to_me = msg.startswith(self.nickname + ":") \
+            or msg.startswith(self.nickname + ",") \
+            or msg.startswith(self.nickname + " ")
 
         if talking_to_me and "uptime" in msg.lower():
             self.uptime(channel)
