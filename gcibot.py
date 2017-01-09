@@ -28,8 +28,6 @@ from twisted.words.protocols import irc
 
 
 logging.basicConfig(level=logging.DEBUG)
-welcome_back = []
-welcome_back_enabled = False
 
 
 class GCIBot(irc.IRCClient):
@@ -70,45 +68,6 @@ class GCIBot(irc.IRCClient):
 
         if talking_to_me and "uptime" in msg.lower():
             self.uptime(channel)
-
-    def userJoined(self, user, channel):
-        human_user = user.split('!', 1)[0]
-        self.check_memo(user, channel)
-
-        if not welcome_back_enabled:
-            return
-
-        if "sugar" in str(channel) and not human_user.lower(
-        ) in self.commands.ignored_users:
-            if human_user in welcome_back:
-                self.msg(channel, "Hi %s, welcome back" % human_user)
-            else:
-                self.msg(channel, "Hi %s, welcome to #sugar" % human_user)
-
-        welcome_back.append(human_user)
-
-    def check_memo(self, user, channel):
-        human_user = user.split('!', 1)[0].lower()
-        msgs_to_remove = []
-        for msg in self.commands.pending_msgs:
-            if msg[1].lower() == human_user:
-                chan = msg[0]
-                if chan == self.nickname:
-                    self.msg(
-                        human_user,
-                        "Message from '%s': %s" % (msg[2],
-                                                   msg[3]))
-                else:
-                    self.msg(
-                        human_user,
-                        "Message from '%s' at '%s (UTC-3)' in channel '%s': %s" % (msg[2],
-                                                                                   msg[4],
-                                                                                   chan,
-                                                                                   msg[3]))
-                msgs_to_remove.append(msg)
-
-        for msg in msgs_to_remove:
-            self.commands.pending_msgs.remove(msg)
 
     def uptime(self, channel):
         host = subprocess.check_output("hostname").replace("\n", " ")
