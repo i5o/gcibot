@@ -17,7 +17,6 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>
 
-from task_data import TaskFinder
 import logging
 import data
 import sys
@@ -35,9 +34,6 @@ class GCIBot(irc.IRCClient):
     username = data.username
     password = data.password
     channels = []
-
-    def __init__(self):
-        self.tasks_finder = TaskFinder(self)
 
     def connectionMade(self):
         irc.IRCClient.connectionMade(self)
@@ -58,10 +54,6 @@ class GCIBot(irc.IRCClient):
             self.join(c)
 
     def privmsg(self, user, channel, msg):
-        tasks = self.tasks_finder.process_msg(msg, channel, user)
-        for task in tasks:
-            self.msg(channel, task)
-
         talking_to_me = msg.startswith(self.nickname + ":") \
             or msg.startswith(self.nickname + ",") \
             or msg.startswith(self.nickname + " ")
