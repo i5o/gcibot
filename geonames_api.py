@@ -13,7 +13,7 @@ WIKIPEDIA_URL = "http://api.geonames.org/wikipediaSearchJSON?formatted=true&q={w
 def get_date_time(place):
     place_info = requests.get(FIND_URL.format(place=place)).json()
     if not place_info["totalResultsCount"]:
-        msg = "~~> %s ~~ city not found" % (place)
+        msg = "%s - city not found <--" % (place)
         return msg
 
     data = place_info["geonames"][0]
@@ -32,7 +32,7 @@ def get_date_time(place):
     except:
         pass
 
-    msg = "~~> %s ~~ %s ~~ %s" % (both, time.strftime(
+    msg = "%s - %s %s" % (both, time.strftime(
         "%H:%M"), time.strftime("(%d/%m/%y)"))
     return msg
 
@@ -40,9 +40,9 @@ def get_date_time(place):
 def city(city):
     wikipedia_result = requests.get(WIKIPEDIA_URL.format(word=city)).json()
     if not len(wikipedia_result["geonames"]):
-        msg = "~~> %s ~~ city not found" % (city)
+        msg = "--> %s <-> city not found <--" % (city)
         return msg
     result = wikipedia_result["geonames"][0]
-    result = "~~> %s ~~> %s -- http://%s" % (
+    result = "--> %s <-> %s -- http://%s" % (
         result["title"], result["summary"], result["wikipediaUrl"])
     return result

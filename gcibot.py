@@ -66,7 +66,9 @@ class GCIBot(irc.IRCClient):
         result = self.commands.process_msg(msg, channel, user)
         self.check_memo(user, channel)
 
-        urls = re.findall('http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\(\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+', msg)
+        urls = re.findall(
+            'http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\(\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+',
+            msg)
         try:
             for url in urls:
                 r = requests.get(url)

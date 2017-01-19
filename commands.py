@@ -175,7 +175,7 @@ class Commands():
                 done = True
 
         if output is not None:
-            self.client.msg(channel, output)
+            self.client.msg(channel, output.encode("utf-8"))
             return False
 
         return True
@@ -567,8 +567,9 @@ class Commands():
         return geonames_api.city(cmd)
 
     def uptime(self):
-        up = subprocess.check_output("uptime")
-        self.client.msg(self.channel, up)
+        host = subprocess.check_output("hostname").replace("\n", " ")
+        up = subprocess.check_output("uptime").replace("\n", " ")
+        self.client.msg(self.channel, "%s %s" % (host, up))
 
     def df(self):
         df = subprocess.check_output(["df", "-h", "-x", "tmpfs"])
@@ -582,5 +583,5 @@ class Commands():
         try:
             xx = subprocess.check_output(command)
             self.client.msg(self.channel, xx)
-        except Exception, error:
+        except Exception as error:
             self.client.msg(self.channel, str(error))
