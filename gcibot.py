@@ -21,6 +21,7 @@ from commands import Commands
 import logging
 import data
 import sys
+import re
 import requests
 import bs4
 
@@ -60,8 +61,6 @@ class GCIBot(irc.IRCClient):
         for c in self.factory.channels:
             self.join(c)
 
-        self.commands.register(True)
-
     def privmsg(self, user, channel, msg):
         result = self.commands.process_msg(msg, channel, user)
         self.check_memo(user, channel)
@@ -77,9 +76,6 @@ class GCIBot(irc.IRCClient):
                 self.msg(channel, "[ %s ]" % title)
         except:
             pass
-
-        # if self.nickname != data.nickname:
-        #     self.commands.register(True)
 
     def userJoined(self, user, channel):
         human_user = user.split('!', 1)[0]
