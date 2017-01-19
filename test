@@ -1,0 +1,3 @@
+#!/bin/bash
+echo "i love everyone but bye."
+pkill -x -f "python gcibot.py"

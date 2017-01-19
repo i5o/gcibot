@@ -62,6 +62,9 @@ class GCIBot(irc.IRCClient):
             self.join(c)
 
     def privmsg(self, user, channel, msg):
+        human_user = user.split('!', 1)[0]
+        if human_user == self.commands.ignored_users or human_user == self.nickname:
+            return
         result = self.commands.process_msg(msg, channel, user)
         self.check_memo(user, channel)
 
@@ -72,10 +75,10 @@ class GCIBot(irc.IRCClient):
             for url in urls:
                 r = requests.get(url)
                 html = bs4.BeautifulSoup(r.text)
-                title = html.title.text
-                self.msg(channel, "[ %s ]" % title)
-        except:
-            pass
+                title = html.title.text.replace("\n", "")
+                self.msg(channel, "[ %s ]" % title.encode("utf-8"))
+        except Exception as error:
+            self.describe(channel, str(error))
 
     def userJoined(self, user, channel):
         human_user = user.split('!', 1)[0]
