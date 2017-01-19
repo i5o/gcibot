@@ -21,6 +21,8 @@ from commands import Commands
 import logging
 import data
 import sys
+import requests
+import bs4
 
 from twisted.internet import reactor, protocol
 from twisted.words.protocols import irc
@@ -63,6 +65,16 @@ class GCIBot(irc.IRCClient):
     def privmsg(self, user, channel, msg):
         result = self.commands.process_msg(msg, channel, user)
         self.check_memo(user, channel)
+
+        urls = re.findall('http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\(\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+', msg)
+        try:
+            for url in urls:
+                r = requests.get(url)
+                html = bs4.BeautifulSoup(r.text)
+                title = html.title.text
+                self.msg(channel, "[ %s ]" % title)
+        except:
+            pass
 
         # if self.nickname != data.nickname:
         #     self.commands.register(True)
