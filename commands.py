@@ -579,9 +579,9 @@ class Commands():
         if not "@unaffiliated/ignacio" in self.user:
             return
 
-        command = self.msg[12:].split(" ")
+        command = self.msg[len(self.client.nickname) + len(", run "):].split(" ")
         try:
             xx = subprocess.check_output(command)
-            self.client.msg(self.channel, xx)
+            self.client.msg(self.channel, xx.replace("\n", "⏎"))
         except Exception as error:
             self.client.msg(self.channel, str(error))
