@@ -121,7 +121,7 @@ links = {
     "timeline": "https://developers.google.com/open-source/gci/timeline",
     "floss": "https://www.gnu.org/philosophy/free-sw.html"}
 
-admins = ["@unaffiliated/ignacio", "@unaffiliated/tymonr"]
+admins = ["@unaffiliated/ignacio", "@unaffiliated/tymonr", "@unaffiliated/ohnx"]
 
 licensing_info = "please read: http://people.sugarlabs.org/ignacio/about_licensing.txt"
 
@@ -134,7 +134,7 @@ class Commands():
         self.channel = None
         self.user = None
         self.human_user = None
-        self.ignored_users = ["meeting"]
+        self.ignored_users = ["meeting", "soakbot", "bannon3001", "zcz"]
 
         self.pending_msgs = []
 

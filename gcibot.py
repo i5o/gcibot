@@ -24,7 +24,6 @@ import sys
 import re
 import requests
 import bs4
-
 from twisted.internet import reactor, protocol
 from twisted.words.protocols import irc
 
@@ -62,11 +61,15 @@ class GCIBot(irc.IRCClient):
             self.join(c)
 
     def privmsg(self, user, channel, msg):
+        try:
+            result = self.commands.process_msg(msg, channel, user)
+            self.check_memo(user, channel)
+        except:
+            pass
+
         human_user = user.split('!', 1)[0]
-        if human_user == self.commands.ignored_users or human_user == self.nickname:
+        if human_user in self.commands.ignored_users or human_user == self.nickname:
             return
-        result = self.commands.process_msg(msg, channel, user)
-        self.check_memo(user, channel)
 
         urls = re.findall(
             'http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\(\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+',
@@ -78,7 +81,7 @@ class GCIBot(irc.IRCClient):
                 title = html.title.text.replace("\n", "")
                 self.msg(channel, "[ %s ]" % title.encode("utf-8"))
         except Exception as error:
-            self.describe(channel, str(error))
+            pass
 
     def userJoined(self, user, channel):
         human_user = user.split('!', 1)[0]
