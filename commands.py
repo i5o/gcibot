@@ -43,6 +43,7 @@ public_commands = [
     ".city"]
 
 commands = [
+    "runpi",
     "run",
     "sayplz",
     "i rock",
@@ -89,6 +90,8 @@ commands = [
     "hi",
     "!hi",
     ".city",
+    "dfpi",
+    "uptimepi",
     "uptime",
     "df"]
 
@@ -121,7 +124,8 @@ links = {
     "timeline": "https://developers.google.com/open-source/gci/timeline",
     "floss": "https://www.gnu.org/philosophy/free-sw.html"}
 
-admins = ["@unaffiliated/ignacio", "@unaffiliated/tymonr", "@unaffiliated/ohnx"]
+full_admins = ["@fedora/sugar/ignacio", "@wikimedia/Tymon-r"]
+admins = ["@fedora/sugar/ignacio", "@wikimedia/Tymon-r", "@unaffiliated/ohnx"]
 
 licensing_info = "please read: http://people.sugarlabs.org/ignacio/about_licensing.txt"
 
@@ -233,6 +237,10 @@ class Commands():
         is_admin = False
 
         for admin in admins:
+            if admin in self.user:
+                is_admin = True
+
+        for admin in full_admins:
             if admin in self.user:
                 is_admin = True
 
@@ -576,7 +584,7 @@ class Commands():
         self.client.msg(self.channel, df)
 
     def run(self):
-        if not "@unaffiliated/ignacio" in self.user or self.client.nickname in self.human_user:
+        if not "@fedora/sugar/ignacio" in self.user or self.client.nickname in self.human_user:
             return
 
         command = self.msg[len(self.client.nickname) + len(", run "):].split(" ")
