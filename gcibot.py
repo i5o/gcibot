@@ -18,11 +18,12 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>
 
 from commands import Commands
-from task_data import TaskFinder
 import logging
 import data
 import sys
-
+import re
+import requests
+import bs4
 from twisted.internet import reactor, protocol
 from twisted.words.protocols import irc
 
@@ -40,7 +41,6 @@ class GCIBot(irc.IRCClient):
 
     def __init__(self):
         self.commands = Commands(self)
-        self.tasks_finder = TaskFinder(self)
 
     def connectionMade(self):
         irc.IRCClient.connectionMade(self)
@@ -60,20 +60,28 @@ class GCIBot(irc.IRCClient):
         for c in self.factory.channels:
             self.join(c)
 
-        self.commands.register(True)
-
     def privmsg(self, user, channel, msg):
-        tasks = []
-        result = self.commands.process_msg(msg, channel, user)
-        if result:
-            tasks = self.tasks_finder.process_msg(msg, channel, user)
-            for task in tasks:
-                self.msg(channel, task)
+        try:
+            result = self.commands.process_msg(msg, channel, user)
+            self.check_memo(user, channel)
+        except:
+            pass
 
-        self.check_memo(user, channel)
+        human_user = user.split('!', 1)[0]
+        if human_user in self.commands.ignored_users or human_user == self.nickname:
+            return
 
-        # if self.nickname != data.nickname:
-        #     self.commands.register(True)
+        urls = re.findall(
+            'http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\(\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+',
+            msg)
+        try:
+            for url in urls:
+                r = requests.get(url)
+                html = bs4.BeautifulSoup(r.text)
+                title = html.title.text.replace("\n", "")
+                self.msg(channel, "[ %s ]" % title.encode("utf-8"))
+        except Exception as error:
+            pass
 
     def userJoined(self, user, channel):
         human_user = user.split('!', 1)[0]

@@ -43,6 +43,7 @@ public_commands = [
     ".city"]
 
 commands = [
+    "runpi",
     "run",
     "sayplz",
     "i rock",
@@ -89,6 +90,8 @@ commands = [
     "hi",
     "!hi",
     ".city",
+    "dfpi",
+    "uptimepi",
     "uptime",
     "df"]
 
@@ -121,7 +124,8 @@ links = {
     "timeline": "https://developers.google.com/open-source/gci/timeline",
     "floss": "https://www.gnu.org/philosophy/free-sw.html"}
 
-admins = ["@unaffiliated/ignacio", "@unaffiliated/tymonr"]
+full_admins = ["@fedora/sugar/ignacio", "@wikimedia/Tymon-r"]
+admins = ["@fedora/sugar/ignacio", "@wikimedia/Tymon-r", "@unaffiliated/ohnx"]
 
 licensing_info = "please read: http://people.sugarlabs.org/ignacio/about_licensing.txt"
 
@@ -134,7 +138,7 @@ class Commands():
         self.channel = None
         self.user = None
         self.human_user = None
-        self.ignored_users = ["meeting"]
+        self.ignored_users = ["meeting", "soakbot", "bannon3001", "zcz"]
 
         self.pending_msgs = []
 
@@ -144,7 +148,7 @@ class Commands():
         self.user = user
         self.human_user = user.split('!', 1)[0]
 
-        if self.human_user in self.ignored_users and not "ignore me" in self.msg:
+        if self.human_user in self.ignored_users and not "ignore me" in self.msg or self.human_user == self.client.nickname:
             return False
 
         talking_to_me = msg.startswith(self.client.nickname + ":") \
@@ -175,7 +179,7 @@ class Commands():
                 done = True
 
         if output is not None:
-            self.client.msg(channel, output)
+            self.client.msg(channel, output.encode("utf-8"))
             return False
 
         return True
@@ -233,6 +237,10 @@ class Commands():
         is_admin = False
 
         for admin in admins:
+            if admin in self.user:
+                is_admin = True
+
+        for admin in full_admins:
             if admin in self.user:
                 is_admin = True
 
@@ -567,20 +575,21 @@ class Commands():
         return geonames_api.city(cmd)
 
     def uptime(self):
-        up = subprocess.check_output("uptime")
-        self.client.msg(self.channel, up)
+        host = subprocess.check_output("hostname").replace("\n", " ")
+        up = subprocess.check_output("uptime").replace("\n", " ")
+        self.client.msg(self.channel, "%s %s" % (host, up))
 
     def df(self):
         df = subprocess.check_output(["df", "-h", "-x", "tmpfs"])
         self.client.msg(self.channel, df)
 
     def run(self):
-        if not "@unaffiliated/ignacio" in self.user:
+        if not "@fedora/sugar/ignacio" in self.user or self.client.nickname in self.human_user:
             return
 
-        command = self.msg[12:].split(" ")
+        command = self.msg[len(self.client.nickname) + len(", run "):].split(" ")
         try:
             xx = subprocess.check_output(command)
-            self.client.msg(self.channel, xx)
-        except Exception, error:
+            self.client.msg(self.channel, xx.replace("\n", "⏎ "))
+        except Exception as error:
             self.client.msg(self.channel, str(error))
