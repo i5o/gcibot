@@ -65,6 +65,10 @@ class GCIBot(irc.IRCClient):
             self.join(c)
 
     def privmsg(self, user, channel, msg):
+        human_user = user.split('!', 1)[0]
+        if human_user in self.commands.ignored_users or human_user == self.nickname:
+            return
+
         tasks = []
         try:
             result = self.commands.process_msg(msg, channel, user)
@@ -77,9 +81,9 @@ class GCIBot(irc.IRCClient):
         except BaseException:
             pass
 
-        human_user = user.split('!', 1)[0]
-        if human_user in self.commands.ignored_users or human_user == self.nickname:
+        if len(tasks):
             return
+
 
         urls = re.findall(
             'http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\(\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+',
