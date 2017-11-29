@@ -13,4 +13,4 @@ def notification():
   return message
 
 if __name__ == '__main__':
-    app.run(port=5324)
+    app.run(host="localhost", port=5324)
