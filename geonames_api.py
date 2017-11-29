@@ -29,7 +29,7 @@ def get_date_time(place):
         both = "%s, %s" % (city, country)
         if city == country:
             both = country
-    except:
+    except BaseException:
         pass
 
     msg = "%s - %s %s" % (both, time.strftime(

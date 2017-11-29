@@ -148,7 +148,7 @@ class Commands():
         self.user = user
         self.human_user = user.split('!', 1)[0]
 
-        if self.human_user in self.ignored_users and not "ignore me" in self.msg or self.human_user == self.client.nickname:
+        if self.human_user in self.ignored_users and "ignore me" not in self.msg or self.human_user == self.client.nickname:
             return False
 
         talking_to_me = msg.startswith(self.client.nickname + ":") \
@@ -584,10 +584,11 @@ class Commands():
         self.client.msg(self.channel, df)
 
     def run(self):
-        if not "@fedora/sugar/ignacio" in self.user or self.client.nickname in self.human_user:
+        if "@fedora/sugar/ignacio" in self.user or self.client.nickname not in self.human_user:
             return
 
-        command = self.msg[len(self.client.nickname) + len(", run "):].split(" ")
+        command = self.msg[len(self.client.nickname) +
+                           len(", run "):].split(" ")
         try:
             xx = subprocess.check_output(command)
             self.client.msg(self.channel, xx.replace("\n", "⏎ "))

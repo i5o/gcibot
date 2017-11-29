@@ -23,23 +23,31 @@ import json
 from logged_data import GoogleSession
 
 organizations = {
-    5382353857806336: "Apertium",
-    4814441002565632: "BRL-CAD",
-    6426002725011456: "CCExtractor Development",
-    4809822100783104: "Copyleft Games",
-    5129917289201664: "Drupal",
-    6707477701722112: "FOSSASIA",
-    5761416665497600: "Haiku Inc",
-    5186916471275520: "KDE",
-    4794680462016512: "MetaBrainz Foundation",
-    5084291717398528: "Mifos Initiative",
-    5452182442737664: "MovingBlocks",
-    5747383933599744: "OpenMRS",
-    5114486142795776: "Sugar Labs",
-    5770017069072384: "Sustainable Computing Research Group ( SCoRe )",
-    6025234696110080: "Systers, an Anita Borg Institute Community",
-    5385807011512320: "Wikimedia",
-    4718815233441792: "Zulip"
+    6541403171586048: "Apertium",
+    5154791065911296: "BRL-CAD",
+    5731053304020992: "CCExtractor Development",
+    5135243763777536: "Catrobat",
+    4854733644759040: "CloudCV",
+    5636094664114176: "Drupal",
+    6237166344601600: "FOSSASIA",
+    6281461650948096: "Haiku",
+    5733899491606528: "JBoss Community",
+    5165875202097152: "LibreHealth",
+    5067404587565056: "Liquid Galaxy project",
+    5936087526539264: "MetaBrainz Foundation",
+    5693523175145472: "MovingBlocks",
+    5139786496999424: "OSGeo",
+    5753409548320768: "OpenMRS",
+    5693741010518016: "OpenWISP",
+    4879181169033216: "Sugar Labs",
+    4923880235859968: "Sustainable Computing Research Group (SCoRe)",
+    5735606506225664: "Systers Community",
+    6239808655458304: "The Mifos Initiative",
+    5133577048031232: "Ubuntu",
+    5740205476675584: "Wikimedia",
+    6299430183501824: "XWiki",
+    5744567921934336: "Zulip",
+    4884530416582656: "coala"
 }
 
 api_link = "https://codein.withgoogle.com/api/program/2016/taskdefinition/{taskid}/"
@@ -79,7 +87,7 @@ class TaskFinder():
                         priv_link.format(taskid=task[1]))
                     ids = re.findall(regex_tasks_1, task_link)
                     task = [0, ids[0]]
-                except:
+                except BaseException:
                     self.client.describe(
                         channel, "can't do anything about that link.")
                     return []
